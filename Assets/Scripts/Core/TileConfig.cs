@@ -10,5 +10,7 @@
         {
             Id = id;
         }
+
+        public SimmetryType Symmetry { get; set; }
     }
 }

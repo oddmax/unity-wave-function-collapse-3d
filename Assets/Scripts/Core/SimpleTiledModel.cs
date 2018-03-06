@@ -8,10 +8,10 @@ The software is provided "as is", without warranty of any kind, express or impli
 
 using System;
 using System.Linq;
-using System.Drawing;
 using System.Xml.Linq;
-using System.Drawing.Imaging;
 using System.Collections.Generic;
+using Core;
+using UnityEngine;
 
 class SimpleTiledModel : Model
 {
@@ -22,27 +22,26 @@ class SimpleTiledModel : Model
 	int tilesize;
 	bool black;
 
-	public SimpleTiledModel(string name, string subsetName, int width, int height, bool periodic, bool black) : base(width, height)
+	public SimpleTiledModel(InputSimpleTiledModelData inputData, string subsetName, int width, int height, bool periodic, bool black) : base(width, height)
 	{
 		this.periodic = periodic;
 		this.black = black;
 
-		XElement xroot = XDocument.Load($"samples/{name}/data.xml").Root;
-		tilesize = xroot.Get("size", 16);
-		bool unique = xroot.Get("unique", false);
+		tilesize = inputData.Size;
+		bool unique = inputData.Unique;
 
-		List<string> subset = null;
-		if (subsetName != default(string))
-		{
-			XElement xsubset = xroot.Element("subsets").Elements("subset").FirstOrDefault(x => x.Get<string>("name") == subsetName);
-			if (xsubset == null) Console.WriteLine($"ERROR: subset {subsetName} is not found");
-			else subset = xsubset.Elements("tile").Select(x => x.Get<string>("name")).ToList();
-		}
-
+		List<string> subset = inputData.GetSubset(subsetName);
+		
 		Color[] tile (Func<int, int, Color> f)
 		{
 			Color[] result = new Color[tilesize * tilesize];
-			for (int y = 0; y < tilesize; y++) for (int x = 0; x < tilesize; x++) result[x + y * tilesize] = f(x, y);
+			for (int y = 0; y < tilesize; y++)
+			{
+				for (int x = 0; x < tilesize; x++)
+				{
+					result[x + y * tilesize] = f(x, y);
+				}
+			}
 			return result;
 		};
 
@@ -55,34 +54,34 @@ class SimpleTiledModel : Model
 		List<int[]> action = new List<int[]>();
 		Dictionary<string, int> firstOccurrence = new Dictionary<string, int>();
 
-		foreach (XElement xtile in xroot.Element("tiles").Elements("tile"))
+		foreach (var tileConfig in inputData.TileConfigs)
 		{
-			string tilename = xtile.Get<string>("name");
+			string tilename = tileConfig.Id;
 			if (subset != null && !subset.Contains(tilename)) continue;
 
 			Func<int, int> a, b;
 			int cardinality;
 
-			char sym = xtile.Get("symmetry", 'X');
-			if (sym == 'L')
+			SimmetryType sym = tileConfig.Symmetry;
+			if (sym == SimmetryType.L)
 			{
 				cardinality = 4;
 				a = i => (i + 1) % 4;
 				b = i => i % 2 == 0 ? i + 1 : i - 1;
 			}
-			else if (sym == 'T')
+			else if (sym == SimmetryType.T)
 			{
 				cardinality = 4;
 				a = i => (i + 1) % 4;
 				b = i => i % 2 == 0 ? i : 4 - i;
 			}
-			else if (sym == 'I')
+			else if (sym == SimmetryType.I)
 			{
 				cardinality = 2;
 				a = i => 1 - i;
 				b = i => i;
 			}
-			else if (sym == '\\')
+			else if (sym == SimmetryType.Slash)
 			{
 				cardinality = 2;
 				a = i => 1 - i;

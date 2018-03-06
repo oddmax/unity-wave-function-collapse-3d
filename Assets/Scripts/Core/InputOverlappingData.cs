@@ -1,13 +1,13 @@
 ﻿namespace Core
 {
-    public class InputData
+    public class InputOverlappingData
     {
         public int Width;
         public int Height;
 
         public TileConfig[,] tiles;
 
-        public InputData(int width, int height)
+        public InputOverlappingData(int width, int height)
         {
             this.Width = width;
             this.Height = height;

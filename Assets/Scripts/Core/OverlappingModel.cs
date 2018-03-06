@@ -19,7 +19,7 @@ class OverlappingModel : Model
 	List<string> tilesConfigs;
 	int ground;
 
-	public OverlappingModel(InputData inputData, int N, int width, int height, bool periodicInput, bool periodicOutput, int symmetry, int ground) 
+	public OverlappingModel(InputOverlappingData inputData, int N, int width, int height, bool periodicInput, bool periodicOutput, int symmetry, int ground) 
 		: base(width, height)
 	{
 		this.N = N;
