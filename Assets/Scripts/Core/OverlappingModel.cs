@@ -7,8 +7,6 @@ The software is provided "as is", without warranty of any kind, express or impli
 */
 
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Collections.Generic;
 using Core;
 
@@ -49,18 +47,33 @@ class OverlappingModel : Model
 		int C = tilesConfigs.Count;
 		long W = Stuff.Power(C, N * N);
 
-		byte[] pattern (Func<int, int, byte> f)
+		Func<Func<int, int, byte>, byte[]> pattern = (f) =>
 		{
 			byte[] result = new byte[N * N];
-			for (int y = 0; y < N; y++) for (int x = 0; x < N; x++) result[x + y * N] = f(x, y);
+			for (int y = 0; y < N; y++)
+			{
+				for (int x = 0; x < N; x++)
+				{
+					result[x + y * N] = f(x, y);
+				}
+			}
 			return result;
 		};
 
-		byte[] patternFromSample(int x, int y) => pattern((dx, dy) => sample[(x + dx) % SMX, (y + dy) % SMY]);
-		byte[] rotate(byte[] p) => pattern((x, y) => p[N - 1 - y + x * N]);
-		byte[] reflect(byte[] p) => pattern((x, y) => p[N - 1 - x + y * N]);
+		Func<int, int, byte[]> patternFromSample = (x, y) =>
+		{
+			return pattern((dx, dy) => sample[(x + dx) % SMX, (y + dy) % SMY]);
+		};
+		Func<byte[], byte[]> rotate  = (p) =>
+		{
+			return pattern((x, y) => p[N - 1 - y + x * N]);
+		};
+		Func<byte[], byte[]> reflect = (p) =>
+		{
+			return pattern((x, y) => p[N - 1 - x + y * N]);
+		};
 
-		long index(byte[] p)
+		Func<byte[], long> index = p =>
 		{
 			long result = 0, power = 1;
 			for (int i = 0; i < p.Length; i++)
@@ -71,7 +84,7 @@ class OverlappingModel : Model
 			return result;
 		};
 
-		byte[] patternFromIndex(long ind)
+		Func<long, byte[]> patternFromIndex = ind =>
 		{
 			long residue = ind, power = W;
 			byte[] result = new byte[N * N];
@@ -138,7 +151,7 @@ class OverlappingModel : Model
 
 		for (int i = 0; i < wave.Length; i++) wave[i] = new bool[T];
 
-		bool agrees(byte[] p1, byte[] p2, int dx, int dy)
+		Func<byte[], byte[], int, int, bool> agrees = (p1, p2, dx, dy) =>
 		{
 			int xmin = dx < 0 ? 0 : dx, xmax = dx < 0 ? dx + N : N, ymin = dy < 0 ? 0 : dy, ymax = dy < 0 ? dy + N : N;
 			for (int y = ymin; y < ymax; y++) for (int x = xmin; x < xmax; x++) if (p1[x + N * y] != p2[x - dx + N * (y - dy)]) return false;
@@ -162,7 +175,10 @@ class OverlappingModel : Model
 		}
 	}
 
-	protected override bool OnBoundary(int i) => !periodic && (i % FMX + N > FMX || i / FMX + N > FMY);
+	protected override bool OnBoundary(int i)
+	{
+		return !periodic && (i % FMX + N > FMX || i / FMX + N > FMY);
+	}
 
 	override protected void Propagate()
 	{
@@ -207,6 +223,7 @@ class OverlappingModel : Model
 		}
 	}
 
+	/*
 	public override Bitmap Graphics()
 	{
 		Bitmap result = new Bitmap(FMX, FMY);
@@ -262,6 +279,7 @@ class OverlappingModel : Model
 
 		return result;
 	}
+	*/
 
 	protected override void Clear()
 	{
