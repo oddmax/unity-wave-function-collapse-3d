@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Core.Data;
 
-namespace Core
+namespace Core.Data
 {
     public class InputSimpleTiledModelData
     {

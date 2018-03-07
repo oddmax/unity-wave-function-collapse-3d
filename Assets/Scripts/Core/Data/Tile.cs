@@ -1,4 +1,4 @@
-﻿namespace Core
+﻿namespace Core.Data
 {
     public struct Tile
     {
