@@ -11,13 +11,14 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using Core;
+using Core.Data;
 using UnityEngine;
 
 class SimpleTiledModel : Model
 {
 	int[][][] propagator;
 
-	List<Color[]> tiles;
+	List<Tile> tiles;
 	List<string> tilenames;
 	int tilesize;
 	bool black;
@@ -32,22 +33,7 @@ class SimpleTiledModel : Model
 
 		List<string> subset = inputData.GetSubset(subsetName);
 		
-		Color[] tile (Func<int, int, Color> f)
-		{
-			Color[] result = new Color[tilesize * tilesize];
-			for (int y = 0; y < tilesize; y++)
-			{
-				for (int x = 0; x < tilesize; x++)
-				{
-					result[x + y * tilesize] = f(x, y);
-				}
-			}
-			return result;
-		};
-
-		Color[] rotate(Color[] array) => tile((x, y) => array[tilesize - 1 - y + x * tilesize]);
-
-		tiles = new List<Color[]>();
+		tiles = new List<Tile>();
 		tilenames = new List<string>();
 		var tempStationary = new List<double>();
 
@@ -116,29 +102,12 @@ class SimpleTiledModel : Model
 				action.Add(map[t]);
 			}
 
-			if (unique)
+			for (int t = 0; t < cardinality; t++)
 			{
-				for (int t = 0; t < cardinality; t++)
-				{
-					Bitmap bitmap = new Bitmap($"samples/{name}/{tilename} {t}.png");
-					tiles.Add(tile((x, y) => bitmap.GetPixel(x, y)));
-					tilenames.Add($"{tilename} {t}");
-				}
-			}
-			else
-			{
-				Bitmap bitmap = new Bitmap($"samples/{name}/{tilename}.png");
-				tiles.Add(tile((x, y) => bitmap.GetPixel(x, y)));
-				tilenames.Add($"{tilename} 0");
-
-				for (int t = 1; t < cardinality; t++)
-				{
-					tiles.Add(rotate(tiles[T + t - 1]));
-					tilenames.Add($"{tilename} {t}");
-				}
-			}
-
-			for (int t = 0; t < cardinality; t++) tempStationary.Add(xtile.Get("weight", 1.0f));
+				tiles.Add(new Tile(tileConfig, t));
+				tilenames.Add(tileConfig.Id + " " + t);
+				tempStationary.Add(tileConfig.Weight);
+			} 
 		}
 
 		T = action.Count;
@@ -155,15 +124,17 @@ class SimpleTiledModel : Model
 
 		for (int i = 0; i < wave.Length; i++) wave[i] = new bool[T];
 
-		foreach (XElement xneighbor in xroot.Element("neighbors").Elements("neighbor"))
+		foreach (NeighborData neighbor in inputData.NeighborDatas)
 		{
-			string[] left = xneighbor.Get<string>("left").Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-			string[] right = xneighbor.Get<string>("right").Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+			var leftNeighbor = neighbor.LeftNeighborId;
+			var rightNeighbor = neighbor.RightNeighborId;
+			if (subset != null && (!subset.Contains(leftNeighbor) || !subset.Contains(rightNeighbor))) continue;
 
-			if (subset != null && (!subset.Contains(left[0]) || !subset.Contains(right[0]))) continue;
-
-			int L = action[firstOccurrence[left[0]]][left.Length == 1 ? 0 : int.Parse(left[1])], D = action[L][1];
-			int R = action[firstOccurrence[right[0]]][right.Length == 1 ? 0 : int.Parse(right[1])], U = action[R][1];
+			var leftRotation = neighbor.LeftRotation;
+			int rightRotation = neighbor.RightRotation;
+			
+			int L = action[firstOccurrence[leftNeighbor]][leftRotation], D = action[L][1];
+			int R = action[firstOccurrence[rightNeighbor]][rightRotation], U = action[R][1];
 
 			tempPropagator[0][R][L] = true;
 			tempPropagator[0][action[R][6]][action[L][6]] = true;
@@ -273,8 +244,12 @@ class SimpleTiledModel : Model
 		}
 	}
 
-	protected override bool OnBoundary(int i) => false;
+	protected override bool OnBoundary(int i)
+	{
+		return false;
+	}
 
+	/*
 	public override Bitmap Graphics()
 	{
 		Bitmap result = new Bitmap(FMX * tilesize, FMY * tilesize);
@@ -328,6 +303,7 @@ class SimpleTiledModel : Model
 
 		return result;
 	}
+	*/
 
 	public string TextOutput()
 	{
@@ -335,7 +311,7 @@ class SimpleTiledModel : Model
 
 		for (int y = 0; y < FMY; y++)
 		{
-			for (int x = 0; x < FMX; x++) result.Append($"{tilenames[observed[x + y * FMX]]}, ");
+			for (int x = 0; x < FMX; x++) result.Append(tilenames[observed[x + y * FMX]]+ ", ");
 			result.Append(Environment.NewLine);
 		}
 

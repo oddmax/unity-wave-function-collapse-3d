@@ -2,10 +2,13 @@
 {
     public struct Tile
     {
-        public int X;
-        public int Y;
-        public int Z;
+        public TileConfig Config;
+        public int Rotation;
 
-        public TileConfig config;
+        public Tile(TileConfig config, int rotation)
+        {
+            Config = config;
+            Rotation = rotation;
+        }
     }
 }
