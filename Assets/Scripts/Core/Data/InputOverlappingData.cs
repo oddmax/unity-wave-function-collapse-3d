@@ -1,4 +1,6 @@
-﻿namespace Core.Data
+﻿using System.Collections.Generic;
+
+namespace Core.Data
 {
     public class InputOverlappingData
     {
@@ -6,6 +8,8 @@
         public int Height;
 
         public TileConfig[,] tiles;
+        
+        public List<TileConfig> list = new List<TileConfig>();
 
         public InputOverlappingData(int width, int height)
         {
@@ -21,6 +25,13 @@
                     tiles[x, y] = TileConfig.Empty;
                 }
             }
+        }
+
+        public void SetTile(int x, int y, string tileId, int rotation)
+        {
+            var tileConfig = new TileConfig(tileId);
+            tileConfig.AdditionalRotation = rotation;
+            tiles[x, y] = tileConfig;
         }
 
         public TileConfig GetTileAt(int x, int y)

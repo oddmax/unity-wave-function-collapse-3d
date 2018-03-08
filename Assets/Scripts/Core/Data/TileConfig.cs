@@ -13,7 +13,7 @@
 
         public SimmetryType Symmetry { get; set; }
         public bool Unique { get; set; }
-        public SimmetryType AdditionalRotation { get; set; }
+        public int AdditionalRotation { get; set; }
         public double Weight { get; set; }
     }
 }
