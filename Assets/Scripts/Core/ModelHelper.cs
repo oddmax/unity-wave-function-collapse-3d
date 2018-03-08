@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Core
 {
-	static class Stuff
+	static class ModelHelper
 	{
 		public static int Random(this double[] a, double r)
 		{

@@ -49,7 +49,7 @@ namespace Core
 			}
 
 			int C = tilesConfigs.Count;
-			long W = Stuff.Power(C, N * N);
+			long W = ModelHelper.Power(C, N * N);
 
 			Func<Func<int, int, byte>, byte[]> pattern = (f) =>
 			{
@@ -72,7 +72,7 @@ namespace Core
 			Func<byte[], byte[]> rotate = (p) => { return pattern((x, y) => p[N - 1 - y + x * N]); };
 			Func<byte[], byte[]> reflect = (p) => { return pattern((x, y) => p[N - 1 - x + y * N]); };
 
-			Func<byte[], long> index = p =>
+			Func<byte[], long> GenerateUniqueIndex = p =>
 			{
 				long result = 0, power = 1;
 				for (int i = 0; i < p.Length; i++)
@@ -125,7 +125,7 @@ namespace Core
 
 				for (int k = 0; k < symmetry; k++)
 				{
-					long ind = index(ps[k]);
+					long ind = GenerateUniqueIndex(ps[k]);
 					if (weights.ContainsKey(ind)) weights[ind]++;
 					else
 					{

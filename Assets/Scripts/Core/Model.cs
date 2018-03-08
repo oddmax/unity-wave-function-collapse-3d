@@ -101,9 +101,15 @@ namespace Core
 			}
 
 			double[] distribution = new double[T];
-			for (int t = 0; t < T; t++) distribution[t] = wave[argmin][t] ? stationary[t] : 0;
+			for (int t = 0; t < T; t++)
+			{
+				distribution[t] = wave[argmin][t] ? stationary[t] : 0;
+			}
 			int r = distribution.Random(random.NextDouble());
-			for (int t = 0; t < T; t++) wave[argmin][t] = t == r;
+			for (int t = 0; t < T; t++)
+			{
+				wave[argmin][t] = t == r;
+			}
 			Change(argmin);
 
 			return null;
