@@ -29,7 +29,6 @@ namespace Core
                     inputData.SetTile(x, y, child.gameObject.name, rotation);
                 } 
             }
-            
 
             return inputData;
         }
