@@ -1,6 +1,6 @@
 ﻿using Core.Data;
 
-namespace Core
+namespace Core.InputProviders
 {
     public interface IInputDataProvider
     {
