@@ -30,7 +30,7 @@ namespace Core.Data
         public void SetTile(int x, int y, string tileId, int rotation)
         {
             var tileConfig = new TileConfig(tileId);
-            tileConfig.AdditionalRotation = rotation;
+            tileConfig.Rotation = rotation;
             tiles[x, y] = tileConfig;
         }
 
