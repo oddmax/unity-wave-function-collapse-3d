@@ -17,7 +17,7 @@ namespace Core
 	{
 		int[][][] propagator;
 
-		List<Tile> tiles;
+		List<SimpleTiledModelTile> tiles;
 		List<string> tilenames;
 		int tilesize;
 		bool black;
@@ -33,7 +33,7 @@ namespace Core
 
 			List<string> subset = inputData.GetSubset(subsetName);
 
-			tiles = new List<Tile>();
+			tiles = new List<SimpleTiledModelTile>();
 			tilenames = new List<string>();
 			var tempStationary = new List<double>();
 
@@ -104,7 +104,7 @@ namespace Core
 
 				for (int t = 0; t < cardinality; t++)
 				{
-					tiles.Add(new Tile(tileConfig, t));
+					tiles.Add(new SimpleTiledModelTile(tileConfig, t));
 					tilenames.Add(tileConfig.Id + " " + t);
 					tempStationary.Add(tileConfig.Weight);
 				}

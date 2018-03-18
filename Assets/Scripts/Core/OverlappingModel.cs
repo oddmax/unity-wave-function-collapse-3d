@@ -35,7 +35,7 @@ namespace Core
 			for (int y = 0; y < SMY; y++)
 			for (int x = 0; x < SMX; x++)
 			{
-				TileConfig tile = inputData.GetTileAt(x, y);
+				OverlappingModelTile tile = inputData.GetTileAt(x, y);
 
 				var i = 0;
 				foreach (var tileId in tilesConfigs)
