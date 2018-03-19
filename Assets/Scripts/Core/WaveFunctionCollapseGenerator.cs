@@ -1,4 +1,6 @@
-﻿using Core.InputProviders;
+﻿using Core.Data;
+using Core.InputProviders;
+using Core.Model;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,11 +10,38 @@ namespace Core
     {
 	    [SerializeField] 
 	    private YuMEInputDataProvider dataProvider;
+
+	    [SerializeField] 
+	    private WaveFunctionCollapseRenderer renderer;
 	    
-	    public void ExtractOverlappingData()
+	    [SerializeField] 
+	    private int width;
+	    
+	    [SerializeField] 
+	    private int depth;
+	    
+	    [SerializeField] 
+	    private int patternSize;
+	    
+	    [SerializeField] 
+	    private bool periodicInput = false;
+
+	    [SerializeField] 
+	    private bool periodicOutput = false;
+	    
+	    [SerializeField] 
+	    private int symmetry = 1;
+	    
+	    [SerializeField] 
+	    private int foundation = 0;
+	    
+	    [SerializeField] 
+	    private int iterations = 0;
+	    
+	    public InputOverlappingData ExtractOverlappingData()
 	    {
 		    var inputOverlappingData = dataProvider.GetInputOverlappingData();
-		   	Debug.Log(inputOverlappingData);
+		    return inputOverlappingData;
 	    }
 
 	    public void ExtractSimpleTiledData()
@@ -22,7 +51,16 @@ namespace Core
 
 	    public void GenerateOverlappingOutput()
 	    {
-		    throw new System.NotImplementedException();
+		    var inputData = ExtractOverlappingData();
+		    var modelParams = new OverlappingModelParams(width, depth, patternSize);
+		    modelParams.PeriodicInput = periodicInput;
+		    modelParams.PeriodicOutput = periodicOutput;
+		    modelParams.Symmetry = symmetry;
+		    modelParams.Ground = foundation;
+		    
+		    var overlappingModel = new OverlappingModel(inputData, modelParams);
+
+		    renderer.PrepareOutputTarget();
 	    }
     }
     
