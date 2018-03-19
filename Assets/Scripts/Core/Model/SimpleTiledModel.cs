@@ -11,9 +11,9 @@ using System.Collections.Generic;
 using System.Text;
 using Core.Data;
 
-namespace Core
+namespace Core.Model
 {
-	class SimpleTiledModel : Model
+	class SimpleTiledModel : Model<SimpleTiledModelParams>
 	{
 		int[][][] propagator;
 
@@ -22,8 +22,8 @@ namespace Core
 		int tilesize;
 		bool black;
 
-		public SimpleTiledModel(InputSimpleTiledModelData inputData, string subsetName, int width, int height, bool periodic,
-			bool black) : base(width, height)
+		public SimpleTiledModel(InputSimpleTiledModelData inputData, SimpleTiledModelParams modelParams, string subsetName, int width, int height, bool periodic,
+			bool black) : base(modelParams)
 		{
 			this.periodic = periodic;
 			this.black = black;

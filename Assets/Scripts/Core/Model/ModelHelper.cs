@@ -8,7 +8,7 @@ The software is provided "as is", without warranty of any kind, express or impli
 
 using System.Linq;
 
-namespace Core
+namespace Core.Model
 {
 	static class ModelHelper
 	{

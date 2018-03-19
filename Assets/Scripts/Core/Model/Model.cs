@@ -7,10 +7,11 @@ The software is provided "as is", without warranty of any kind, express or impli
 */
 
 using System;
+using Core.Data;
 
-namespace Core
+namespace Core.Model
 {
-	abstract class Model
+	abstract class Model<PARAM> where PARAM : WaveFunctionCollapseModelParams
 	{
 		protected bool[][] wave;
 		protected double[] stationary;
@@ -27,10 +28,10 @@ namespace Core
 		double[] logProb;
 		double logT;
 
-		protected Model(int width, int height)
+		protected Model(PARAM modelParam)
 		{
-			FMX = width;
-			FMY = height;
+			FMX = modelParam.Width;
+			FMY = modelParam.Height;
 
 			wave = new bool[FMX * FMY][];
 			changes = new bool[FMX * FMY];

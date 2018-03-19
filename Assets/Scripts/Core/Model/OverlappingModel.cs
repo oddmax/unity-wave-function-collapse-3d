@@ -10,9 +10,9 @@ using System;
 using System.Collections.Generic;
 using Core.Data;
 
-namespace Core
+namespace Core.Model
 {
-	class OverlappingModel : Model
+	class OverlappingModel : Model<OverlappingModelParams>
 	{
 		int[][][][] propagator;
 		int N;
@@ -21,12 +21,16 @@ namespace Core
 		List<string> tilesConfigs;
 		int ground;
 
-		public OverlappingModel(InputOverlappingData inputData, int N, int width, int height, bool periodicInput,
-			bool periodicOutput, int symmetry, int ground)
-			: base(width, height)
+		public OverlappingModel(InputOverlappingData inputData, OverlappingModelParams modelParams)
+			: base(modelParams)
 		{
-			this.N = N;
-			periodic = periodicOutput;
+			N = modelParams.PatternSize;
+
+			bool periodicInput = modelParams.PeriodicInput;
+			int symmetry = modelParams.Symmetry;
+			int ground = modelParams.Ground;
+			
+			periodic = modelParams.PeriodicOutput;
 
 			int SMX = inputData.Width, SMY = inputData.Height;
 			byte[,] sample = new byte[SMX, SMY];
