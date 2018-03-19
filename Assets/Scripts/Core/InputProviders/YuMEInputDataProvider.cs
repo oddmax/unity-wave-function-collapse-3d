@@ -19,7 +19,6 @@ namespace Core.InputProviders
             var offsetWidth = Mathf.CeilToInt(width / 2);
             var offsetDepth = Mathf.CeilToInt(depth / 2);
 
-
             var inputData = new InputOverlappingData(width, depth);
             
             foreach (var levelContainer in levelsList)
