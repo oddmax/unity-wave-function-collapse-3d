@@ -45,5 +45,12 @@ namespace Core.InputProviders
         {
             throw new System.NotImplementedException();
         }
+        
+        void OnDrawGizmos(){
+            Gizmos.color = Color.cyan;
+            Gizmos.matrix = transform.localToWorldMatrix;
+            Gizmos.DrawWireCube(new Vector3(-0.5f, 0f, -0.5f),
+                new Vector3(grid.gridWidth, 1, grid.gridDepth));
+        }
     }
 }

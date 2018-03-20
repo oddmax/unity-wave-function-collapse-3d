@@ -58,9 +58,9 @@ namespace Core
 		    modelParams.Symmetry = symmetry;
 		    modelParams.Ground = foundation;
 		    
-		    var overlappingModel = new OverlappingModel(inputData, modelParams);
+		    //var overlappingModel = new OverlappingModel(inputData, modelParams);
 
-		    renderer.PrepareOutputTarget();
+		    renderer.PrepareOutputTarget(width, depth);
 	    }
     }
     

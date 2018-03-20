@@ -18,7 +18,6 @@ namespace Core.Model
 		int N;
 
 		byte[][] patterns;
-		List<string> tilesConfigs;
 		int ground;
 
 		public OverlappingModel(InputOverlappingData inputData, OverlappingModelParams modelParams)
@@ -32,25 +31,9 @@ namespace Core.Model
 			
 			periodic = modelParams.PeriodicOutput;
 
-			int SMX = inputData.Width, SMY = inputData.Height;
-			byte[,] sample = new byte[SMX, SMY];
-			tilesConfigs = new List<string>();
+			int SMX = inputData.Width, SMY = inputData.Depth;
 
-			for (int y = 0; y < SMY; y++)
-			for (int x = 0; x < SMX; x++)
-			{
-				OverlappingModelTile tile = inputData.GetTileAt(x, y);
-
-				var i = 0;
-				foreach (var tileId in tilesConfigs)
-				{
-					if (tileId == tile.Id) break;
-					i++;
-				}
-
-				if (i == tilesConfigs.Count) tilesConfigs.Add(tile.Id);
-				sample[x, y] = (byte) i;
-			}
+			var sample = inputData.GetSampleMatrix();
 
 			int C = tilesConfigs.Count;
 			long W = ModelHelper.Power(C, N * N);

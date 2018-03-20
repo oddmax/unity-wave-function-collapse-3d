@@ -23,6 +23,10 @@ namespace Core.Model
 
 		protected System.Random random;
 		protected int FMX, FMY, T;
+		
+		/// <summary>
+		/// Whether the input data wraps around an axis.
+		/// </summary>
 		protected bool periodic;
 
 		double[] logProb;
@@ -39,7 +43,6 @@ namespace Core.Model
 			stack = new int[FMX * FMY];
 			stacksize = 0;
 		}
-
 
 		protected abstract void Propagate();
 
@@ -120,7 +123,10 @@ namespace Core.Model
 		{
 			logT = Math.Log(T);
 			logProb = new double[T];
-			for (int t = 0; t < T; t++) logProb[t] = Math.Log(stationary[t]);
+			for (int t = 0; t < T; t++)
+			{
+				logProb[t] = Math.Log(stationary[t]);
+			}
 
 			Clear();
 			random = new Random(seed);

@@ -4,13 +4,14 @@
     {
         public static OverlappingModelTile Empty = new OverlappingModelTile(new TileConfig("Empty"), 0);
 
-        public TileConfig config;
-        public string Id;
+        public TileConfig Config { get; private set; }
+        public string Id { get; private set; }
 
         public OverlappingModelTile(TileConfig tileConfig, int rotation)
         {
-            config = tileConfig;
-            this.Rotation = Rotation;
+            Config = tileConfig;
+            Rotation = rotation;
+            Id = Config.Id + "|" + Rotation;
         }
 
         public int Rotation { get; set; }
