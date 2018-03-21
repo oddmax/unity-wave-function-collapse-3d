@@ -8,10 +8,10 @@ namespace Core.Data
         public int Depth;
 
         public OverlappingModelTile[,] tiles;
-        private byte[,] tilesIndexIds;
+        public byte[,] tilesIndexIds;
 
         public Dictionary<string, TileConfig> Configs = new Dictionary<string, TileConfig>();
-        private List<string> TilesIdsList = new List<string>();
+        public List<string> TilesIdsList = new List<string>();
         public List<OverlappingModelTile> list = new List<OverlappingModelTile>();
 
         public InputOverlappingData(int width, int depth)

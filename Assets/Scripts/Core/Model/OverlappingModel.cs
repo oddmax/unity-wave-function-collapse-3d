@@ -35,7 +35,7 @@ namespace Core.Model
 
 			var sample = inputData.GetSampleMatrix();
 
-			int C = tilesConfigs.Count;
+			int C = inputData.TilesIdsList.Count;
 			long W = ModelHelper.Power(C, N * N);
 
 			Func<Func<int, int, byte>, byte[]> pattern = (f) =>
