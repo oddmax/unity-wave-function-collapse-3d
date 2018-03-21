@@ -56,8 +56,14 @@ namespace Core.Model
 			{
 				return pattern((dx, dy) => sample[(x + dx) % SMX, (y + dy) % SMY]);
 			};
-			Func<byte[], byte[]> rotate = (p) => { return pattern((x, y) => p[N - 1 - y + x * N]); };
-			Func<byte[], byte[]> reflect = (p) => { return pattern((x, y) => p[N - 1 - x + y * N]); };
+			Func<byte[], byte[]> rotate = (p) =>
+			{
+				return pattern((x, y) => p[N - 1 - y + x * N]);
+			};
+			Func<byte[], byte[]> reflect = (p) =>
+			{
+				return pattern((x, y) => p[N - 1 - x + y * N]);
+			};
 
 			Func<byte[], long> GenerateUniqueIndex = p =>
 			{
