@@ -43,6 +43,28 @@ namespace Core.Model
 			stack = new int[FMX * FMY];
 			stacksize = 0;
 		}
+		
+		public bool Run(int seed, int limit)
+		{
+			logT = Math.Log(T);
+			logProb = new double[T];
+			for (int t = 0; t < T; t++)
+			{
+				logProb[t] = Math.Log(stationary[t]);
+			}
+
+			Clear();
+			random = new Random(seed);
+
+			for (int l = 0; l < limit || limit == 0; l++)
+			{
+				bool? result = Observe();
+				if (result != null) return (bool) result;
+				Propagate();
+			}
+
+			return true;
+		}
 
 		protected abstract void Propagate();
 
@@ -158,27 +180,7 @@ namespace Core.Model
 			return logSum - mainSum / sum;
 		}
 
-		public bool Run(int seed, int limit)
-		{
-			logT = Math.Log(T);
-			logProb = new double[T];
-			for (int t = 0; t < T; t++)
-			{
-				logProb[t] = Math.Log(stationary[t]);
-			}
-
-			Clear();
-			random = new Random(seed);
-
-			for (int l = 0; l < limit || limit == 0; l++)
-			{
-				bool? result = Observe();
-				if (result != null) return (bool) result;
-				Propagate();
-			}
-
-			return true;
-		}
+		
 
 		protected void Change(int i)
 		{
