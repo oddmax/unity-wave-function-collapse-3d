@@ -48,75 +48,114 @@ namespace Core.Model
 
 		bool? Observe()
 		{
+			int? indexWithLowestEntropy = FindCellWithLowestEntropy();
+			
+			if (indexWithLowestEntropy == null)
+			{
+				//There is the cell with no possible values which means that we found a contradiction
+				return false;
+			}
+			
+			// All values has collapsed, fill result in observed function
+			if (indexWithLowestEntropy == -1)
+			{
+				FillGeneratedResult();
+				return true;
+			}
+
+			//collapse cell value to one of possiblities randomly based on their weight
+			double[] distribution = new double[T];
+			for (int t = 0; t < T; t++)
+			{
+				distribution[t] = wave[indexWithLowestEntropy.Value][t] ? stationary[t] : 0;
+			}
+			int r = distribution.Random(random.NextDouble());
+			for (int t = 0; t < T; t++)
+			{
+				wave[indexWithLowestEntropy.Value][t] = t == r;
+			}
+			Change(indexWithLowestEntropy.Value);
+
+			return null;
+		}
+
+		private int? FindCellWithLowestEntropy()
+		{
 			double min = 1E+3;
-			int argmin = -1;
+			int indexWithLowestEntropy = -1;
 
 			for (int i = 0; i < wave.Length; i++)
 			{
 				if (OnBoundary(i)) continue;
 
-				bool[] w = wave[i];
+				bool[] waveValuesForCurrentIndex = wave[i];
 				int amount = 0;
 				double sum = 0;
 
 				for (int t = 0; t < T; t++)
-					if (w[t])
-					{
-						amount += 1;
-						sum += stationary[t];
-					}
+				{
+					if (waveValuesForCurrentIndex[t] == false) continue;
+					amount += 1;
+					sum += stationary[t];
+				}
 
-				if (sum == 0) return false;
+				if (sum == 0)
+				{
+					return null;
+				}
 
 				double noise = 1E-6 * random.NextDouble();
 
-				double entropy;
-				if (amount == 1) entropy = 0;
-				else if (amount == T) entropy = logT;
-				else
-				{
-					double mainSum = 0;
-					double logSum = Math.Log(sum);
-					for (int t = 0; t < T; t++)
-						if (w[t])
-							mainSum += stationary[t] * logProb[t];
-					entropy = logSum - mainSum / sum;
-				}
+				double entropy = CalculateEntropy(amount, sum, waveValuesForCurrentIndex);
 
 				if (entropy > 0 && entropy + noise < min)
 				{
 					min = entropy + noise;
-					argmin = i;
+					indexWithLowestEntropy = i;
 				}
 			}
 
-			if (argmin == -1)
+			return indexWithLowestEntropy;
+		}
+
+		private void FillGeneratedResult()
+		{
+			observed = new int[FMX * FMY];
+			for (int i = 0; i < wave.Length; i++)
 			{
-				observed = new int[FMX * FMY];
-				for (int i = 0; i < wave.Length; i++)
 				for (int t = 0; t < T; t++)
+				{
 					if (wave[i][t])
 					{
 						observed[i] = t;
 						break;
 					}
-
-				return true;
+				}
 			}
+		}
 
-			double[] distribution = new double[T];
+		private double CalculateEntropy(int amount, double sum, bool[] waveValuesForCurrentIndex)
+		{
+			if (amount == 1)
+			{
+				return 0;
+			}
+			if (amount == T)
+			{
+				return logT;
+			}
+			
+			double mainSum = 0;
+			double logSum = Math.Log(sum);
 			for (int t = 0; t < T; t++)
 			{
-				distribution[t] = wave[argmin][t] ? stationary[t] : 0;
+				if (waveValuesForCurrentIndex[t])
+				{
+					mainSum += stationary[t] * logProb[t];
+				}
 			}
-			int r = distribution.Random(random.NextDouble());
-			for (int t = 0; t < T; t++)
-			{
-				wave[argmin][t] = t == r;
-			}
-			Change(argmin);
 
-			return null;
+			return logSum - mainSum / sum;
 		}
 
 		public bool Run(int seed, int limit)
