@@ -165,21 +165,27 @@ namespace Core.Model
 					{
 						List<int> list = new List<int>();
 						for (int t2 = 0; t2 < T; t2++)
+						{
 							if (agrees(patterns[t], patterns[t2], x - N + 1, y - N + 1))
 								list.Add(t2);
+						}
+
 						propagator[x][y][t] = new int[list.Count];
-						for (int c = 0; c < list.Count; c++) propagator[x][y][t][c] = list[c];
+						for (int c = 0; c < list.Count; c++)
+						{
+							propagator[x][y][t][c] = list[c];
+						}
 					}
 				}
 			}
 		}
 
-		protected override bool OnBoundary(int i)
+		public override bool OnBoundary(int i)
 		{
 			return !periodic && (i % FMX + N > FMX || i / FMX + N > FMY);
 		}
 
-		override protected void Propagate()
+		protected override void Propagate()
 		{
 			while (stacksize > 0)
 			{
@@ -190,6 +196,7 @@ namespace Core.Model
 				bool[] w1 = wave[i1];
 				int x1 = i1 % FMX, y1 = i1 / FMX;
 
+				//reduce entropy in surrounding cells on pattern distance
 				for (int dx = -N + 1; dx < N; dx++)
 				for (int dy = -N + 1; dy < N; dy++)
 				{
@@ -212,7 +219,10 @@ namespace Core.Model
 						{
 							bool b = false;
 							int[] p = prop[t2];
-							for (int l = 0; l < p.Length && !b; l++) b = w1[p[l]];
+							for (int l = 0; l < p.Length && !b; l++)
+							{
+								b = w1[p[l]];
+							}
 
 							if (!b)
 							{

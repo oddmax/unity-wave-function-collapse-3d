@@ -249,7 +249,7 @@ namespace Core.Model
 			}
 		}
 
-		protected override bool OnBoundary(int i)
+		public override bool OnBoundary(int i)
 		{
 			return false;
 		}
