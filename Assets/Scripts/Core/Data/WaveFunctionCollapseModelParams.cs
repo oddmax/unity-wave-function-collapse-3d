@@ -2,13 +2,13 @@
 {
     public class WaveFunctionCollapseModelParams
     {
-        public WaveFunctionCollapseModelParams(int width, int height)
+        public WaveFunctionCollapseModelParams(int width, int depth)
         {
             Width = width;
-            Height = height;
+            Depth = depth;
         }
 
         public int Width { get; private set; }
-        public int Height { get; private set; }
+        public int Depth { get; private set; }
     }
 }
