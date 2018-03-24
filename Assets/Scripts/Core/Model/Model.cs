@@ -7,6 +7,7 @@ The software is provided "as is", without warranty of any kind, express or impli
 */
 
 using System;
+using System.Collections;
 using Core.Data;
 
 namespace Core.Model
@@ -32,10 +33,18 @@ namespace Core.Model
 		double[] logProb;
 		double logT;
 
+		/// <summary>
+		/// Amount of all possible patterns of size NxN
+		/// </summary>
+		public int PatternsAmount
+		{
+			get { return T; }
+		}
+
 		protected Model(PARAM modelParam)
 		{
 			FMX = modelParam.Width;
-			FMY = modelParam.Height;
+			FMY = modelParam.Depth;
 
 			wave = new bool[FMX * FMY][];
 			changes = new bool[FMX * FMY];
@@ -46,6 +55,38 @@ namespace Core.Model
 		
 		public bool Run(int seed, int limit)
 		{
+			Init(seed);
+
+			for (int l = 0; l < limit || limit == 0; l++)
+			{
+				bool? result = Observe();
+				if (result != null) return result.Value;
+				Propagate();
+			}
+
+			return true;
+		}
+
+		public IEnumerator RunViaEnumerator(int seed, int limit, Action<bool> resultCallback, Action<bool[][]> iterationCallback)
+		{
+			Init(seed);
+
+			for (int l = 0; l < limit || limit == 0; l++)
+			{
+				bool? result = Observe();
+				if (result != null)
+				{
+					resultCallback(result.Value);
+					break;
+				}
+				Propagate();
+				
+				yield return null;
+			}
+		}
+		
+		private void Init(int seed)
+		{
 			logT = Math.Log(T);
 			logProb = new double[T];
 			for (int t = 0; t < T; t++)
@@ -54,16 +95,12 @@ namespace Core.Model
 			}
 
 			Clear();
+			
 			random = new Random(seed);
-
-			for (int l = 0; l < limit || limit == 0; l++)
+			if (seed == 0)
 			{
-				bool? result = Observe();
-				if (result != null) return (bool) result;
-				Propagate();
-			}
-
-			return true;
+				random = new Random();
+			} 
 		}
 
 		protected abstract void Propagate();
@@ -72,11 +109,8 @@ namespace Core.Model
 		{
 			int? indexWithLowestEntropy = FindCellWithLowestEntropy();
 			
-			if (indexWithLowestEntropy == null)
-			{
-				//There is the cell with no possible values which means that we found a contradiction
-				return false;
-			}
+			//There is the cell with no possible values which means that we found a contradiction
+			if (indexWithLowestEntropy == null) return false;
 			
 			// All values has collapsed, fill result in observed function
 			if (indexWithLowestEntropy == -1)
@@ -180,8 +214,6 @@ namespace Core.Model
 			return logSum - mainSum / sum;
 		}
 
-		
-
 		protected void Change(int i)
 		{
 			if (changes[i]) return;
@@ -200,6 +232,6 @@ namespace Core.Model
 			}
 		}
 
-		protected abstract bool OnBoundary(int i);
-	}
-}
+		public abstract bool OnBoundary(int i);
+ 	}
+ }
