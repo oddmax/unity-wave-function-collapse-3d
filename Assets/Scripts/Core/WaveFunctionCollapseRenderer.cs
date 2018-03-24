@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Core.Model;
+using UnityEngine;
 
 namespace Core
 {
@@ -7,6 +8,7 @@ namespace Core
         private int width;
         private int depth;
         private float gridSize = 1f;
+        private OverlappingModel model;
 
         public void Clear()
         {
@@ -34,7 +36,23 @@ namespace Core
         {
             this.depth = depth;
             this.width = width;
+        }
+
+        public void Init(OverlappingModel model)
+        {
+            this.model = model;
             Clear();
+        }
+
+        public void UpdateStates()
+        {
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < depth; y++)
+                {
+                    var cellState = model.GetCellStateAt(x, y);
+                }
+            }
         }
     }
 }

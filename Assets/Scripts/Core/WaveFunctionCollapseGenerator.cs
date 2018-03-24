@@ -64,27 +64,14 @@ namespace Core
 		    renderer.PrepareOutputTarget(width, depth);
 		    
 		    overlappingModel = new OverlappingModel(inputOverlappingData, modelParams);
+		    renderer.Init(overlappingModel);
+		    
 		    StartCoroutine(overlappingModel.RunViaEnumerator(0, iterations, OnResult, OnIteration));
 	    }
 	    
 	    private void OnIteration(bool[][] wave)
 	    {
-		    int FMY = inputOverlappingData.Depth;
-		    int FMX = inputOverlappingData.Width;
-		    for (int i = 0; i < wave.Length; i++)
-		    {
-			    int contributors = 0, r = 0, g = 0, b = 0;
-			    int x = i % FMY, y = i / FMX;
-			    
-			    for (int t = 0; t < T; t++)
-			    {
-				    if (wave[i][t])
-				    {
-					    observed[i] = t;
-					    break;
-				    }
-			    }
-		    }
+		    renderer.UpdateStates();
 	    }
 
 	    private void OnResult(bool result)
