@@ -12,7 +12,7 @@ using Core.Data;
 
 namespace Core.Model
 {
-	class OverlappingModel : Model<OverlappingModelParams>
+	public class OverlappingModel : Model<OverlappingModelParams>
 	{
 		int[][][][] propagator;
 		int N;
@@ -232,6 +232,25 @@ namespace Core.Model
 						}
 				}
 			}
+		}
+
+		public override CellState GetCellStateAt(int x, int y)
+		{
+			int dy = y < FMY - N + 1 ? 0 : N - 1;
+			int dx = x < FMX - N + 1 ? 0 : N - 1;
+
+			int patternsAmount;
+			int? collapsedPatternId;
+			CalculateEntropyAndPatternIdAt(x - dx, y - dy, out patternsAmount, out collapsedPatternId);
+
+			byte? tileId = null;
+			if (collapsedPatternId != null)
+			{
+				tileId = patterns[collapsedPatternId.Value][dx + dy * N];
+			}
+
+			float entropy = patternsAmount / T;
+			return new CellState(entropy, tileId);
 		}
 
 		/*

@@ -13,7 +13,7 @@ using Core.Data;
 
 namespace Core.Model
 {
-	class SimpleTiledModel : Model<SimpleTiledModelParams>
+	public class SimpleTiledModel : Model<SimpleTiledModelParams>
 	{
 		int[][][] propagator;
 
@@ -247,6 +247,11 @@ namespace Core.Model
 						}
 				}
 			}
+		}
+
+		public override CellState GetCellStateAt(int x, int y)
+		{
+			throw new NotImplementedException();
 		}
 
 		public override bool OnBoundary(int i)

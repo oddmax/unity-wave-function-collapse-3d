@@ -12,7 +12,7 @@ using Core.Data;
 
 namespace Core.Model
 {
-	abstract class Model<PARAM> where PARAM : WaveFunctionCollapseModelParams
+	public abstract class Model<PARAM> where PARAM : WaveFunctionCollapseModelParams
 	{
 		protected bool[][] wave;
 		protected double[] stationary;
@@ -186,6 +186,25 @@ namespace Core.Model
 						observed[i] = t;
 						break;
 					}
+				}
+			}
+		}
+
+		public abstract CellState GetCellStateAt(int x, int y);
+
+		protected void CalculateEntropyAndPatternIdAt(int x, int y, out int possiblitiesAmount, out int? patternId)
+		{
+			int indexInWave = x + y * FMX;
+			int amount = 0;
+			possiblitiesAmount = 0;
+			patternId = null;
+			var possiblePatternsFlags = wave[indexInWave];
+			for (int t = 0; t < T; t++)
+			{
+				if (possiblePatternsFlags[t])
+				{
+					possiblitiesAmount += 1;
+					patternId = t;
 				}
 			}
 		}
