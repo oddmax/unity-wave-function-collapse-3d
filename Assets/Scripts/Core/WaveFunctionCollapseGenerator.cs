@@ -37,7 +37,10 @@ namespace Core
 	    
 	    [SerializeField] 
 	    private int iterations = 0;
-	    
+
+	    private OverlappingModel overlappingModel;
+	    private InputOverlappingData inputOverlappingData;
+
 	    public InputOverlappingData ExtractOverlappingData()
 	    {
 		    var inputOverlappingData = dataProvider.GetInputOverlappingData();
@@ -51,17 +54,44 @@ namespace Core
 
 	    public void GenerateOverlappingOutput()
 	    {
-		    var inputData = ExtractOverlappingData();
+		    inputOverlappingData = ExtractOverlappingData();
 		    var modelParams = new OverlappingModelParams(width, depth, patternSize);
 		    modelParams.PeriodicInput = periodicInput;
 		    modelParams.PeriodicOutput = periodicOutput;
 		    modelParams.Symmetry = symmetry;
 		    modelParams.Ground = foundation;
 		    
-		    //var overlappingModel = new OverlappingModel(inputData, modelParams);
-
 		    renderer.PrepareOutputTarget(width, depth);
+		    
+		    overlappingModel = new OverlappingModel(inputOverlappingData, modelParams);
+		    StartCoroutine(overlappingModel.RunViaEnumerator(0, iterations, OnResult, OnIteration));
 	    }
+	    
+	    private void OnIteration(bool[][] wave)
+	    {
+		    int FMY = inputOverlappingData.Depth;
+		    int FMX = inputOverlappingData.Width;
+		    for (int i = 0; i < wave.Length; i++)
+		    {
+			    int contributors = 0, r = 0, g = 0, b = 0;
+			    int x = i % FMY, y = i / FMX;
+			    
+			    for (int t = 0; t < T; t++)
+			    {
+				    if (wave[i][t])
+				    {
+					    observed[i] = t;
+					    break;
+				    }
+			    }
+		    }
+	    }
+
+	    private void OnResult(bool result)
+	    {
+		    Debug.Log("Result is : " + result);
+	    }
+	    
     }
     
 	#if UNITY_EDITOR
