@@ -23,6 +23,7 @@ namespace Core.Model
 		public OverlappingModel(InputOverlappingData inputData, OverlappingModelParams modelParams)
 			: base(modelParams)
 		{
+			InputData = inputData;
 			N = modelParams.PatternSize;
 
 			bool periodicInput = modelParams.PeriodicInput;
@@ -35,7 +36,7 @@ namespace Core.Model
 
 			var sample = inputData.GetSampleMatrix();
 
-			int C = inputData.TilesIdsList.Count;
+			int C = inputData.TilesSortedByIds.Count;
 			long W = ModelHelper.Power(C, N * N);
 
 			Func<Func<int, int, byte>, byte[]> pattern = (f) =>
@@ -179,6 +180,8 @@ namespace Core.Model
 				}
 			}
 		}
+
+		public InputOverlappingData InputData { get; private set; }
 
 		public override bool OnBoundary(int i)
 		{
