@@ -1,14 +1,19 @@
-﻿using Core.Model;
+﻿using Core.Data;
+using Core.Model;
 using UnityEngine;
 
 namespace Core
 {
     public class WaveFunctionCollapseRenderer : MonoBehaviour
     {
+        [SerializeField] 
+        private GameObject uncollapsedTilePrefab;
+        
         private int width;
         private int depth;
         private float gridSize = 1f;
         private OverlappingModel model;
+        private GameObject[,] tiles;
 
         public void Clear()
         {
@@ -36,23 +41,45 @@ namespace Core
         {
             this.depth = depth;
             this.width = width;
+            
+            tiles = new GameObject[width, depth];
         }
 
         public void Init(OverlappingModel model)
         {
             this.model = model;
             Clear();
+            PrepareOutputTarget(width, depth);
         }
 
         public void UpdateStates()
         {
             for (int x = 0; x < width; x++)
             {
-                for (int y = 0; y < depth; y++)
+                for (int z = 0; z < depth; z++)
                 {
-                    var cellState = model.GetCellStateAt(x, y);
+                    var cellState = model.GetCellStateAt(x, z);
+                    var tileObject = tiles[x, z];
+                    if (tileObject == null)
+                    {
+                        tileObject = CreateTile(x, z, cellState);
+                    }
                 }
             }
+        }
+
+        private GameObject CreateTile(int x, int z, CellState cellState)
+        {
+            GameObject tileObject;
+            if (cellState.Collapsed)
+            {
+                var tile = model.InputData.GetTileById(cellState.TileIndex.Value);
+               // tileObject = Instantiate(tile.Config.Id);
+                return tileObject;
+            }
+
+            tileObject = Instantiate(uncollapsedTilePrefab);
+            return tileObject;
         }
     }
 }
