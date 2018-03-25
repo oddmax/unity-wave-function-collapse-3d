@@ -61,8 +61,6 @@ namespace Core
 		    modelParams.Symmetry = symmetry;
 		    modelParams.Ground = foundation;
 		    
-		    renderer.PrepareOutputTarget(width, depth);
-		    
 		    overlappingModel = new OverlappingModel(inputOverlappingData, modelParams);
 		    renderer.Init(overlappingModel);
 		    
