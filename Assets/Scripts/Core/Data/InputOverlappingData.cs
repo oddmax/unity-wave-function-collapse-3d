@@ -4,63 +4,68 @@ namespace Core.Data
 {
     public class InputOverlappingData
     {
-        public int Width;
-        public int Depth;
+        public readonly int Width;
+        public readonly int Depth;
 
         public OverlappingModelTile[,] tiles;
         public byte[,] tilesIndexIds;
 
         public Dictionary<string, TileConfig> Configs = new Dictionary<string, TileConfig>();
-        public List<string> TilesIdsList = new List<string>();
-        public List<OverlappingModelTile> list = new List<OverlappingModelTile>();
+        public List<OverlappingModelTile> TilesSortedByIds = new List<OverlappingModelTile>();
 
         public InputOverlappingData(int width, int depth)
         {
-            this.Width = width;
-            this.Depth = depth;
+            Width = width;
+            Depth = depth;
             
             tiles = new OverlappingModelTile[width, depth];
 
             for (int x = 0; x < width; x++)
             {
-                for (int y = 0; y < depth; y++)
+                for (int z = 0; z < depth; z++)
                 {
-                    tiles[x, y] = OverlappingModelTile.Empty;
+                    tiles[x, z] = OverlappingModelTile.Empty;
                 }
             }
-            
-            
-            
         }
 
         public byte[,] GetSampleMatrix()
         {
             tilesIndexIds = new byte[Width, Depth];
             
-            TilesIdsList.Clear();
+            TilesSortedByIds.Clear();
 
-            for (int y = 0; y < Depth; y++)
-            for (int x = 0; x < Width; x++)
+            for (var z = 0; z < Depth; z++)
+            for (var x = 0; x < Width; x++)
             {
-                OverlappingModelTile tile = tiles[x, y];
+                var tile = tiles[x, z];
 
-                var i = 0;
-                foreach (var tileId in TilesIdsList)
+                int i;
+                for (i = 0; i < TilesSortedByIds.Count; i++)
                 {
-                    if (tileId == tile.Id) break;
-                    i++;
+                    if (TilesSortedByIds[i].Id == tile.Id) break;
                 }
 
-                if (i == TilesIdsList.Count)
+                if (i == TilesSortedByIds.Count)
                 {
-                    TilesIdsList.Add(tile.Id);
+                    TilesSortedByIds.Add(tile);
                 }
-                tilesIndexIds[x, y] = (byte) i;
+                tilesIndexIds[x, z] = (byte) i;
             }
 
             return tilesIndexIds;
         }
 
+        public OverlappingModelTile GetTileById(byte id)
+        {
+            if (id < TilesSortedByIds.Count)
+            {
+                return TilesSortedByIds[id];
+            }
+
+            return null;
+        }
+        
         public void SetTile(int x, int y, string tileId, int rotation)
         {
             TileConfig tileConfig;
