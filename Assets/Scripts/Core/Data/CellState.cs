@@ -14,5 +14,10 @@
             EntropyLevel = entropyLevel;
             TileIndex = tileIndex;
         }
+
+        public bool Collapsed
+        {
+            get { return TileIndex != null; }
+        }
     }
 }
