@@ -1,6 +1,6 @@
 ﻿namespace Core.Data
 {
-    public struct SimpleTiledModelTile
+    public class SimpleTiledModelTile
     {
         public SimpleTiledModelTileConfig Config;
         public int Rotation;
