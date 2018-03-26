@@ -59,10 +59,24 @@ namespace Core
                 for (int z = 0; z < depth; z++)
                 {
                     var cellState = model.GetCellStateAt(x, z);
-                    var tileObject = tiles[x, z];
-                    if (tileObject == null)
+                    var tileGameObject = tiles[x, z];
+                    if (tileGameObject != null)
                     {
-                        tileObject = CreateTile(x, z, cellState);
+                        var uncollapsedTileView = tileGameObject.GetComponent<UncollapsedTileView>();
+                        if (uncollapsedTileView != null)
+                        {
+                            uncollapsedTileView.UpdateState(cellState.EntropyLevel);
+                            if (cellState.Collapsed)
+                            {
+                                Destroy(tileGameObject);
+                                tileGameObject = null;
+                            }
+                        }
+                    }
+
+                    if (tileGameObject == null)
+                    {
+                        tiles[x, z] = CreateTile(x, z, cellState);
                     }
                 }
             }
@@ -74,11 +88,11 @@ namespace Core
             if (cellState.Collapsed)
             {
                 var tile = model.InputData.GetTileById(cellState.TileIndex.Value);
-               // tileObject = Instantiate(tile.Config.Id);
+                tileObject = Instantiate(tile.Config.Prefab, transform);
                 return tileObject;
             }
 
-            tileObject = Instantiate(uncollapsedTilePrefab);
+            tileObject = Instantiate(uncollapsedTilePrefab, transform);
             return tileObject;
         }
     }
