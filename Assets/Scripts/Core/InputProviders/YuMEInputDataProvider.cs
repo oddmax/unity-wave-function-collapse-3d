@@ -1,4 +1,5 @@
-﻿using Core.Data;
+﻿using System.Collections.Generic;
+using Core.Data;
 using UnityEngine;
 
 namespace Core.InputProviders
@@ -11,6 +12,20 @@ namespace Core.InputProviders
         [SerializeField] 
         private GameObject[] levelsList;
         
+        [SerializeField] 
+        private GameObject[] tilesPrefabs;
+
+        private Dictionary<string, GameObject> tilesPrefabMap;
+
+        private void Awake()
+        {
+            tilesPrefabMap = new Dictionary<string, GameObject>();
+            foreach (var tilePrefab in tilesPrefabs)
+            {
+                tilesPrefabMap.Add(tilePrefab.name, tilePrefab);
+            }
+        }
+
         public InputOverlappingData GetInputOverlappingData()
         {
             var width = grid.gridWidth;
@@ -34,7 +49,7 @@ namespace Core.InputProviders
                     }
                     
                     Debug.Log(string.Format("X: {0}; Y: {1}, id: {2}", x, y, child.gameObject.name));
-                    inputData.SetTile(x, y, child.gameObject.name, rotation);
+                    inputData.SetTile(x, y, tilesPrefabMap[child.gameObject.name], rotation);
                 } 
             }
 
@@ -45,8 +60,21 @@ namespace Core.InputProviders
         {
             throw new System.NotImplementedException();
         }
+
+        private GameObject GetPrefab(string name)
+        {
+            foreach (var tilePrefab in tilesPrefabs)
+            {
+                if (tilePrefab.name == name)
+                {
+                    return tilePrefab;
+                }
+            }
+
+            return null;
+        }
         
-        void OnDrawGizmos(){
+        private void OnDrawGizmos(){
             Gizmos.color = Color.cyan;
             Gizmos.matrix = transform.localToWorldMatrix;
             Gizmos.DrawWireCube(new Vector3(-0.5f, 0f, -0.5f),
