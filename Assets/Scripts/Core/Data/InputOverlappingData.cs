@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Core.Data
 {
@@ -66,16 +67,16 @@ namespace Core.Data
             return null;
         }
         
-        public void SetTile(int x, int y, string tileId, int rotation)
+        public void SetTile(int x, int y, GameObject tilePrefab, int rotation)
         {
             TileConfig tileConfig;
-            if (Configs.ContainsKey(tileId))
+            if (Configs.ContainsKey(tilePrefab.name))
             {
-                tileConfig = Configs[tileId];
+                tileConfig = Configs[tilePrefab.name];
             }
             else
             {
-                tileConfig = new TileConfig(tileId);
+                tileConfig = new TileConfig(tilePrefab);
             }
             var tile = new OverlappingModelTile(tileConfig, rotation);
             tiles[x, y] = tile;
