@@ -2,7 +2,7 @@
 {
     public class OverlappingModelTile : Tile<TileConfig>
     {
-        public static OverlappingModelTile Empty = new OverlappingModelTile(new TileConfig("Empty"), 0);
+        public static OverlappingModelTile Empty = new OverlappingModelTile(new TileConfig(null), 0);
 
         public string Id { get; private set; }
 

@@ -1,11 +1,13 @@
-﻿namespace Core.Data
+﻿using UnityEngine;
+
+namespace Core.Data
 {
     public class SimpleTiledModelTileConfig : TileConfig
     {
         public double Weight { get; set; }
         public SimmetryType Symmetry { get; set; }
 
-        public SimpleTiledModelTileConfig(string id) : base(id)
+        public SimpleTiledModelTileConfig(GameObject prefab) : base(prefab)
         {
         }
     }

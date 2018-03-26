@@ -1,12 +1,23 @@
-﻿namespace Core.Data
+﻿using UnityEngine;
+
+namespace Core.Data
 {
     public class TileConfig
     {
-        public string Id;
+        public string Id { get; private set; }
+        public GameObject Prefab { get; private set; }
 
-        public TileConfig(string id)
+        public TileConfig(GameObject prefab)
         {
-            Id = id;
+            Prefab = prefab;
+            if (prefab == null)
+            {
+                Id = "Empty";
+            }
+            else
+            {
+                Id = prefab.name;
+            }
         }
     }
 }
