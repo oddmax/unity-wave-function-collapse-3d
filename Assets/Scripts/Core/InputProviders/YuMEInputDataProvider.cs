@@ -5,9 +5,12 @@ using UnityEngine;
 namespace Core.InputProviders
 {
     public class YuMEInputDataProvider : MonoBehaviour, IInputDataProvider
-    {
+    {   
         [SerializeField] 
-        private YuME_GizmoGrid grid;
+        private int width;
+        
+        [SerializeField] 
+        private int depth;
         
         [SerializeField] 
         private GameObject[] levelsList;
@@ -19,17 +22,15 @@ namespace Core.InputProviders
 
         private void Awake()
         {
-            tilesPrefabMap = new Dictionary<string, GameObject>();
-            foreach (var tilePrefab in tilesPrefabs)
-            {
-                tilesPrefabMap.Add(tilePrefab.name, tilePrefab);
-            }
+            FillPrefabMap();
         }
 
         public InputOverlappingData GetInputOverlappingData()
         {
-            var width = grid.gridWidth;
-            var depth = grid.gridDepth;
+            if (Application.isPlaying == false)
+            {
+                FillPrefabMap();
+            }
 
             var offsetWidth = Mathf.CeilToInt(width / 2);
             var offsetDepth = Mathf.CeilToInt(depth / 2);
@@ -48,7 +49,7 @@ namespace Core.InputProviders
                         rotation = 0;
                     }
                     
-                    Debug.Log(string.Format("X: {0}; Y: {1}, id: {2}", x, y, child.gameObject.name));
+                    Debug.Log(string.Format("X: {0}; Y: {1}, id: {2}", x, y, tilesPrefabMap[child.gameObject.name].name));
                     inputData.SetTile(x, y, tilesPrefabMap[child.gameObject.name], rotation);
                 } 
             }
@@ -73,12 +74,21 @@ namespace Core.InputProviders
 
             return null;
         }
+
+        private void FillPrefabMap()
+        {
+            tilesPrefabMap = new Dictionary<string, GameObject>();
+            foreach (var tilePrefab in tilesPrefabs)
+            {
+                tilesPrefabMap.Add(tilePrefab.name, tilePrefab);
+            }
+        }
         
         private void OnDrawGizmos(){
             Gizmos.color = Color.cyan;
             Gizmos.matrix = transform.localToWorldMatrix;
             Gizmos.DrawWireCube(new Vector3(-0.5f, 0f, -0.5f),
-                new Vector3(grid.gridWidth, 1, grid.gridDepth));
+                new Vector3(width, 1, depth));
         }
     }
 }
