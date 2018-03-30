@@ -9,6 +9,8 @@ The software is provided "as is", without warranty of any kind, express or impli
 using System;
 using System.Collections;
 using Core.Data;
+using UnityEngine;
+using Random = System.Random;
 
 namespace Core.Model
 {
@@ -40,9 +42,12 @@ namespace Core.Model
 		{
 			get { return T; }
 		}
+		
+		public PARAM ModelParam { get; private set; }
 
 		protected Model(PARAM modelParam)
 		{
+			ModelParam = modelParam;
 			FMX = modelParam.Width;
 			FMY = modelParam.Depth;
 
@@ -52,7 +57,7 @@ namespace Core.Model
 			stack = new int[FMX * FMY];
 			stacksize = 0;
 		}
-		
+
 		public bool Run(int seed, int limit)
 		{
 			Init(seed);
@@ -71,7 +76,7 @@ namespace Core.Model
 		{
 			Init(seed);
 
-			for (int l = 0; l < limit || limit == 0; l++)
+			for (int iteration = 0; iteration < limit || limit == 0; iteration++)
 			{
 				bool? result = Observe();
 				if (result != null)
@@ -79,8 +84,9 @@ namespace Core.Model
 					resultCallback(result.Value);
 					break;
 				}
+				Debug.Log("Propagate, iteration: " + iteration);
 				Propagate();
-				
+				iterationCallback(wave);
 				yield return null;
 			}
 		}
@@ -107,6 +113,7 @@ namespace Core.Model
 
 		bool? Observe()
 		{
+			Debug.Log("Observe state");
 			int? indexWithLowestEntropy = FindCellWithLowestEntropy();
 			
 			//There is the cell with no possible values which means that we found a contradiction
@@ -206,6 +213,11 @@ namespace Core.Model
 					possiblitiesAmount += 1;
 					patternId = t;
 				}
+			}
+
+			if (possiblitiesAmount != 1)
+			{
+				patternId = null;
 			}
 		}
 
