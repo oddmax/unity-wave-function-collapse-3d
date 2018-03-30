@@ -39,21 +39,22 @@ namespace Core
 
         public void PrepareOutputTarget(int width, int depth)
         {
-            this.depth = depth;
-            this.width = width;
             
-            tiles = new GameObject[width, depth];
         }
 
         public void Init(OverlappingModel model)
         {
             this.model = model;
             Clear();
-            PrepareOutputTarget(width, depth);
+            depth = model.ModelParam.Depth;
+            width = model.ModelParam.Width;
+            
+            tiles = new GameObject[width, depth];
         }
 
         public void UpdateStates()
         {
+            Debug.Log("Update states");
             for (int x = 0; x < width; x++)
             {
                 for (int z = 0; z < depth; z++)
@@ -68,7 +69,14 @@ namespace Core
                             uncollapsedTileView.UpdateState(cellState.EntropyLevel);
                             if (cellState.Collapsed)
                             {
-                                Destroy(tileGameObject);
+                                if (Application.isPlaying)
+                                {
+                                    Destroy(tileGameObject);
+                                }
+                                else
+                                {
+                                    DestroyImmediate(tileGameObject);
+                                }
                                 tileGameObject = null;
                             }
                         }
@@ -88,11 +96,18 @@ namespace Core
             if (cellState.Collapsed)
             {
                 var tile = model.InputData.GetTileById(cellState.TileIndex.Value);
+                if (tile.Config.Prefab == null)
+                {
+                    return null;
+                }
                 tileObject = Instantiate(tile.Config.Prefab, transform);
+                tileObject.transform.localPosition = new Vector3(x, 0, z);
+                tileObject.transform.localEulerAngles = new Vector3(0, 0, 360 - tile.Rotation * 90);
                 return tileObject;
             }
 
             tileObject = Instantiate(uncollapsedTilePrefab, transform);
+            tileObject.transform.localPosition = new Vector3(x, 0, z);
             return tileObject;
         }
     }

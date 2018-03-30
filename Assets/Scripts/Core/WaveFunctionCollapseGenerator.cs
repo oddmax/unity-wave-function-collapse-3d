@@ -40,6 +40,12 @@ namespace Core
 
 	    private OverlappingModel overlappingModel;
 	    private InputOverlappingData inputOverlappingData;
+	    private Coroutine runningCoroutine;
+
+	    private void Start()
+	    {
+		    GenerateOverlappingOutput();
+	    }
 
 	    public InputOverlappingData ExtractOverlappingData()
 	    {
@@ -64,7 +70,7 @@ namespace Core
 		    overlappingModel = new OverlappingModel(inputOverlappingData, modelParams);
 		    renderer.Init(overlappingModel);
 		    
-		    StartCoroutine(overlappingModel.RunViaEnumerator(0, iterations, OnResult, OnIteration));
+		    runningCoroutine = StartCoroutine(overlappingModel.RunViaEnumerator(0, iterations, OnResult, OnIteration));
 	    }
 	    
 	    private void OnIteration(bool[][] wave)
@@ -76,7 +82,11 @@ namespace Core
 	    {
 		    Debug.Log("Result is : " + result);
 	    }
-	    
+
+	    public void Abort()
+	    {
+		    StopCoroutine(runningCoroutine);
+	    }
     }
     
 	#if UNITY_EDITOR
@@ -92,6 +102,9 @@ namespace Core
 			}
 			if(GUILayout.Button("Generate Overlapping output")){
 				generator.GenerateOverlappingOutput();
+			}
+			if(GUILayout.Button("Abort")){
+				generator.Abort();
 			}
 			DrawDefaultInspector ();
 		}

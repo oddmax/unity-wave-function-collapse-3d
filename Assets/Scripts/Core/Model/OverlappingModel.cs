@@ -252,7 +252,7 @@ namespace Core.Model
 				tileId = patterns[collapsedPatternId.Value][dx + dy * N];
 			}
 
-			float entropy = patternsAmount / T;
+			float entropy = (float)patternsAmount / T;
 			return new CellState(entropy, tileId);
 		}
 
