@@ -20,7 +20,6 @@ namespace Core.Model
 
 		List<SimpleTiledModelTile> tiles;
 		List<string> tilenames;
-		int tilesize;
 		bool black;
 
 		public SimpleTiledModel(InputSimpleTiledModelData inputData, SimpleTiledModelParams modelParams, string subsetName, int width, int height, bool periodic,
@@ -28,9 +27,6 @@ namespace Core.Model
 		{
 			this.periodic = periodic;
 			this.black = black;
-
-			tilesize = inputData.Size;
-			bool unique = inputData.Unique;
 
 			List<string> subset = inputData.GetSubset(subsetName);
 
@@ -49,26 +45,26 @@ namespace Core.Model
 				Func<int, int> a, b;
 				int cardinality;
 
-				SimmetryType sym = tileConfig.Symmetry;
-				if (sym == SimmetryType.L)
+				SymmetryType sym = tileConfig.Symmetry;
+				if (sym == SymmetryType.L)
 				{
 					cardinality = 4;
 					a = i => (i + 1) % 4;
 					b = i => i % 2 == 0 ? i + 1 : i - 1;
 				}
-				else if (sym == SimmetryType.T)
+				else if (sym == SymmetryType.T)
 				{
 					cardinality = 4;
 					a = i => (i + 1) % 4;
 					b = i => i % 2 == 0 ? i : 4 - i;
 				}
-				else if (sym == SimmetryType.I)
+				else if (sym == SymmetryType.I)
 				{
 					cardinality = 2;
 					a = i => 1 - i;
 					b = i => i;
 				}
-				else if (sym == SimmetryType.Slash)
+				else if (sym == SymmetryType.Slash)
 				{
 					cardinality = 2;
 					a = i => 1 - i;
