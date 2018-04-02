@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Core.Data
+namespace Core.Data.SimpleTiledModel
 {
     public class SimpleTiledModelTileConfig : TileConfig
     {

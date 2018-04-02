@@ -1,4 +1,4 @@
-﻿namespace Core.Data
+﻿namespace Core.Data.OverlappingModel
 {
     public class OverlappingModelTile : Tile<TileConfig>
     {

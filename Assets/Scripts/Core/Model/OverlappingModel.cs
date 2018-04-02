@@ -9,6 +9,7 @@ The software is provided "as is", without warranty of any kind, express or impli
 using System;
 using System.Collections.Generic;
 using Core.Data;
+using Core.Data.OverlappingModel;
 
 namespace Core.Model
 {

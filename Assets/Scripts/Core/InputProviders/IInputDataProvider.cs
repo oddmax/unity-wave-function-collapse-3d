@@ -1,4 +1,6 @@
 ﻿using Core.Data;
+using Core.Data.OverlappingModel;
+using Core.Data.SimpleTiledModel;
 
 namespace Core.InputProviders
 {

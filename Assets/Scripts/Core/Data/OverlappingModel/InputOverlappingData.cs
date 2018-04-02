@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Core.Data
+namespace Core.Data.OverlappingModel
 {
     public class InputOverlappingData
     {

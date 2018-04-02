@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Core.Data;
+using Core.Data.OverlappingModel;
+using Core.Data.SimpleTiledModel;
 using UnityEngine;
 
 namespace Core.InputProviders

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Core.Data;
+using Core.Data.SimpleTiledModel;
 
 namespace Core.Model
 {
