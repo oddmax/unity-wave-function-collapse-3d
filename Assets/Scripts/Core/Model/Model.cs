@@ -58,6 +58,13 @@ namespace Core.Model
 			stacksize = 0;
 		}
 
+		
+		/// <summary>
+		/// Run model to generate output
+		/// </summary>
+		/// <param name="seed"> All internal random values are derived from this seed, providing 0 results in a random number. </param>
+		/// <param name="limit"> How many iterations to run, providing 0 will run until completion or a contradiction. </param>
+		/// <returns></returns>
 		public bool Run(int seed, int limit)
 		{
 			Init(seed);
@@ -72,6 +79,12 @@ namespace Core.Model
 			return true;
 		}
 
+		/// <summary>
+		/// Run model as Enumerator to generate output
+		/// </summary>
+		/// <param name="seed"> All internal random values are derived from this seed, providing 0 results in a random number. </param>
+		/// <param name="limit"> How many iterations to run, providing 0 will run until completion or a contradiction. </param>
+		/// <returns></returns>
 		public IEnumerator RunViaEnumerator(int seed, int limit, Action<bool> resultCallback, Action<bool[][]> iterationCallback)
 		{
 			Init(seed);
