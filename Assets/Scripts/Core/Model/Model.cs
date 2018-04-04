@@ -123,6 +123,11 @@ namespace Core.Model
 		}
 
 		protected abstract void Propagate();
+		
+		protected void InitWave()
+		{
+			for (var i = 0; i < wave.Length; i++) wave[i] = new bool[T];
+		}
 
 		bool? Observe()
 		{
