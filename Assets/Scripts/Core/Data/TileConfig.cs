@@ -19,5 +19,10 @@ namespace Core.Data
                 Id = prefab.name;
             }
         }
+
+        public override string ToString()
+        {
+            return Id;
+        }
     }
 }

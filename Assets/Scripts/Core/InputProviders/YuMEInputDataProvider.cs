@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Core.Data;
 using Core.Data.OverlappingModel;
 using Core.Data.SimpleTiledModel;
@@ -37,28 +38,15 @@ namespace Core.InputProviders
             {
                 FillPrefabMap();
             }
+            
+            var tileConfigData = CreateTileConfigData(tilePrefab => new TileConfig(tilePrefab));
 
-            var inputData = new InputOverlappingData(width, depth);
-            
-            var offsetWidth = Mathf.CeilToInt(width / 2);
-            var offsetDepth = Mathf.CeilToInt(depth / 2);
-            
-            foreach (var levelContainer in levelsList)
+            var inputData = new InputOverlappingData(tileConfigData, width, depth);
+
+            ExecuteForEachTile((tile, x, z, rotation) =>
             {
-                foreach (Transform child in levelContainer.transform)
-                {
-                    var x = Mathf.RoundToInt(child.localPosition.x) + offsetWidth;
-                    var y = Mathf.RoundToInt(child.localPosition.z) + offsetDepth;
-                    int rotation = (int)((360 - child.localEulerAngles.z)/90);
-                    if (rotation == 4)
-                    {
-                        rotation = 0;
-                    }
-                    
-                    Debug.Log(string.Format("X: {0}; Y: {1}, id: {2}", x, y, tilesPrefabMap[child.gameObject.name].name));
-                    inputData.SetTile(x, y, tilesPrefabMap[child.gameObject.name], rotation);
-                } 
-            }
+                inputData.SetTile(tileConfigData.GetConfig(tile.name), x, z, rotation);
+            });
 
             return inputData;
         }
@@ -79,11 +67,38 @@ namespace Core.InputProviders
             });
             
             var inputData = new InputSimpleTiledModelData(tileConfigData);
-
-            ExecuteForEachTile((tile, x, z, rotation) =>
+            var tiles = new SimpleTiledModelTile[width, depth];
+            
+            ExecuteForEachTile((tileGo, x, z, rotation) =>
             {
-                //TODO implement
+                tiles[x, z] = new SimpleTiledModelTile(tileConfigData.GetConfig(tileGo.name), rotation);
             });
+
+            var neighbors = new Dictionary<string, NeighborData>();
+            ExecuteForEachTile((tileGo, x, z, rotation) =>
+            {
+                var currentTile = tiles[x, z];
+                for (int offset = 0; offset < 2; offset++){
+                    int rx = x + 1 - offset;
+                    int rz = z + offset;
+                    if (rx < width && rz < depth)
+                    {
+                        var currentTileRotation = (currentTile.Rotation + offset)%4;
+                        var nextTile = tiles[x, z];
+                        var nextTileRotation = (nextTile.Rotation + offset)%4;
+                        string key = currentTile.Config.Id + "." + currentTileRotation + "|" + nextTile.Config.Id + "." + nextTileRotation ;
+                        
+                        if (neighbors.ContainsKey(key)) continue;
+                        
+                        neighbors.Add(key, new NeighborData(currentTile.Config, nextTile.Config, currentTileRotation, nextTileRotation));
+                        Debug.DrawLine(
+                            transform.TransformPoint(new Vector3(x + 0f, 1f, z + 0f)),
+                            transform.TransformPoint(new Vector3(x + 1f - offset, 1f, z + 0f + offset)), Color.red, 9.0f, false);
+                    }
+                }
+            });
+
+            inputData.SetNeighbors(neighbors.Values.ToList());
 
             return inputData;
         }

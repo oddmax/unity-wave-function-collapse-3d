@@ -11,11 +11,12 @@ namespace Core.Data.OverlappingModel
         public OverlappingModelTile[,] tiles;
         public byte[,] tilesIndexIds;
 
-        public Dictionary<string, TileConfig> Configs = new Dictionary<string, TileConfig>();
         public List<OverlappingModelTile> TilesSortedByIds = new List<OverlappingModelTile>();
+        private TileConfigData<TileConfig> tileConfigData;
 
-        public InputOverlappingData(int width, int depth)
+        public InputOverlappingData(TileConfigData<TileConfig> tileConfigData, int width, int depth)
         {
+            this.tileConfigData = tileConfigData;
             Width = width;
             Depth = depth;
             
@@ -67,17 +68,8 @@ namespace Core.Data.OverlappingModel
             return null;
         }
         
-        public void SetTile(int x, int y, GameObject tilePrefab, int rotation)
+        public void SetTile(TileConfig tileConfig, int x, int y, int rotation)
         {
-            TileConfig tileConfig;
-            if (Configs.ContainsKey(tilePrefab.name))
-            {
-                tileConfig = Configs[tilePrefab.name];
-            }
-            else
-            {
-                tileConfig = new TileConfig(tilePrefab);
-            }
             var tile = new OverlappingModelTile(tileConfig, rotation);
             tiles[x, y] = tile;
         }
