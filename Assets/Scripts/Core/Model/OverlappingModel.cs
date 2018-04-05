@@ -243,18 +243,17 @@ namespace Core.Model
 			int dy = y < FMY - N + 1 ? 0 : N - 1;
 			int dx = x < FMX - N + 1 ? 0 : N - 1;
 
-			int patternsAmount;
 			int? collapsedPatternId;
-			CalculateEntropyAndPatternIdAt(x - dx, y - dy, out patternsAmount, out collapsedPatternId);
+			float entropy;
+			CalculateEntropyAndPatternIdAt(x - dx, y - dy, out entropy, out collapsedPatternId);
 
-			byte? tileId = null;
+			ITile tile = null;
 			if (collapsedPatternId != null)
 			{
-				tileId = patterns[collapsedPatternId.Value][dx + dy * N];
+				tile = InputData.GetTileById(patterns[collapsedPatternId.Value][dx + dy * N]);
 			}
 
-			float entropy = (float)patternsAmount / T;
-			return new CellState(entropy, tileId);
+			return new CellState(entropy, tile);
 		}
 
 		/*

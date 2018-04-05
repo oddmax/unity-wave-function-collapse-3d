@@ -7,17 +7,17 @@
         /// <summary>
         /// Going to be null if Entropy level is more than 0
         /// </summary>
-        public byte? TileIndex;
+        public ITile Tile { get; private set; }
 
-        public CellState(float entropyLevel, byte? tileIndex)
+        public CellState(float entropyLevel, ITile tileIndex)
         {
             EntropyLevel = entropyLevel;
-            TileIndex = tileIndex;
+            Tile = tileIndex;
         }
 
         public bool Collapsed
         {
-            get { return TileIndex != null; }
+            get { return Tile != null; }
         }
     }
 }

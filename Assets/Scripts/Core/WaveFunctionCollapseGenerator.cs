@@ -1,5 +1,6 @@
 ﻿using Core.Data;
 using Core.Data.OverlappingModel;
+using Core.Data.SimpleTiledModel;
 using Core.InputProviders;
 using Core.Model;
 using UnityEditor;
@@ -40,6 +41,7 @@ namespace Core
 	    private int iterations = 0;
 
 	    private OverlappingModel overlappingModel;
+	    private SimpleTiledModel simpleTiledModel;
 	    private InputOverlappingData inputOverlappingData;
 	    private Coroutine runningCoroutine;
 
@@ -48,20 +50,14 @@ namespace Core
 		    GenerateOverlappingOutput();
 	    }
 
-	    public InputOverlappingData ExtractOverlappingData()
-	    {
-		    var inputOverlappingData = dataProvider.GetInputOverlappingData();
-		    return inputOverlappingData;
-	    }
-
 	    public void ExtractSimpleTiledData()
 	    {
-		    throw new System.NotImplementedException();
+		    var inputSimpleModelData = dataProvider.GetInputSimpleTiledData();
 	    }
 
 	    public void GenerateOverlappingOutput()
 	    {
-		    inputOverlappingData = ExtractOverlappingData();
+		    inputOverlappingData = dataProvider.GetInputOverlappingData();
 		    var modelParams = new OverlappingModelParams(width, depth, patternSize);
 		    modelParams.PeriodicInput = periodicInput;
 		    modelParams.PeriodicOutput = periodicOutput;
@@ -72,6 +68,17 @@ namespace Core
 		    renderer.Init(overlappingModel);
 		    
 		    runningCoroutine = StartCoroutine(overlappingModel.RunViaEnumerator(0, iterations, OnResult, OnIteration));
+	    }
+
+	    public void GenerateSimpleTiledOutput()
+	    {
+		    var inputData = dataProvider.GetInputSimpleTiledData();
+		    var modelParams = new SimpleTiledModelParams(width, depth, periodicOutput);
+		    
+		    simpleTiledModel = new SimpleTiledModel(inputData, modelParams);
+		    renderer.Init(simpleTiledModel);
+		    
+		    runningCoroutine = StartCoroutine(simpleTiledModel.RunViaEnumerator(0, iterations, OnResult, OnIteration));
 	    }
 	    
 	    private void OnIteration(bool[][] wave)
@@ -87,6 +94,7 @@ namespace Core
 	    public void Abort()
 	    {
 		    StopCoroutine(runningCoroutine);
+		    renderer.Clear();
 	    }
     }
     
@@ -95,16 +103,16 @@ namespace Core
 	public class WaveFunctionCollapseGeneratorEditor : Editor {
 		public override void OnInspectorGUI () {
 			WaveFunctionCollapseGenerator generator = (WaveFunctionCollapseGenerator)target;
-			if(GUILayout.Button("Extract Overlapping data")){
-				generator.ExtractOverlappingData();
-			}
 			if(GUILayout.Button("Extract Simple tiled data")){
 				generator.ExtractSimpleTiledData();
 			}
 			if(GUILayout.Button("Generate Overlapping output")){
 				generator.GenerateOverlappingOutput();
 			}
-			if(GUILayout.Button("Abort")){
+			if(GUILayout.Button("Generate Simple tiled output")){
+				generator.GenerateSimpleTiledOutput();
+			}
+			if(GUILayout.Button("Abort and Clear")){
 				generator.Abort();
 			}
 			DrawDefaultInspector ();

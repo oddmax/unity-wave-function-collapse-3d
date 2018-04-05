@@ -14,7 +14,7 @@ using Random = System.Random;
 
 namespace Core.Model
 {
-	public abstract class Model<PARAM> where PARAM : WaveFunctionCollapseModelParams
+	public abstract class Model<PARAM> : IModel where PARAM : WaveFunctionCollapseModelParams
 	{
 		protected bool[][] wave;
 		protected double[] stationary;
@@ -32,22 +32,26 @@ namespace Core.Model
 		/// </summary>
 		protected bool periodic;
 
-		double[] logProb;
-		double logT;
+		private double[] logProb;
+		private double logT;
+		private PARAM modelParam;
 
 		/// <summary>
-		/// Amount of all possible patterns of size NxN
+		/// Amount of all possible patterns
 		/// </summary>
 		public int PatternsAmount
 		{
 			get { return T; }
 		}
 		
-		public PARAM ModelParam { get; private set; }
-
+		public WaveFunctionCollapseModelParams ModelParam
+		{
+			get { return modelParam; }
+		}
+		
 		protected Model(PARAM modelParam)
 		{
-			ModelParam = modelParam;
+			this.modelParam = modelParam;
 			FMX = modelParam.Width;
 			FMY = modelParam.Depth;
 
@@ -217,26 +221,27 @@ namespace Core.Model
 
 		public abstract CellState GetCellStateAt(int x, int y);
 
-		protected void CalculateEntropyAndPatternIdAt(int x, int y, out int possiblitiesAmount, out int? patternId)
+		protected void CalculateEntropyAndPatternIdAt(int x, int y, out float entropy, out int? patternId)
 		{
 			int indexInWave = x + y * FMX;
 			int amount = 0;
-			possiblitiesAmount = 0;
 			patternId = null;
 			var possiblePatternsFlags = wave[indexInWave];
 			for (int t = 0; t < T; t++)
 			{
 				if (possiblePatternsFlags[t])
 				{
-					possiblitiesAmount += 1;
+					amount += 1;
 					patternId = t;
 				}
 			}
 
-			if (possiblitiesAmount != 1)
+			if (amount != 1)
 			{
 				patternId = null;
 			}
+			
+			entropy = (float)amount / T;
 		}
 
 		private double CalculateEntropy(int amount, double sum, bool[] waveValuesForCurrentIndex)
@@ -283,4 +288,4 @@ namespace Core.Model
 
 		public abstract bool OnBoundary(int i);
  	}
- }
+}

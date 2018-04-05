@@ -251,7 +251,19 @@ namespace Core.Model
 
 		public override CellState GetCellStateAt(int x, int y)
 		{
-			throw new NotImplementedException();
+			bool[] a = wave[x + y * FMX];
+			
+			float entropy;
+			int? collapsedPatternId;
+			CalculateEntropyAndPatternIdAt(x, y, out entropy, out collapsedPatternId);
+
+			ITile tile = null;
+			if (collapsedPatternId != null)
+			{
+				tile = tiles[collapsedPatternId.Value];
+			}
+
+			return new CellState(entropy, tile);
 		}
 
 		public override bool OnBoundary(int i)
