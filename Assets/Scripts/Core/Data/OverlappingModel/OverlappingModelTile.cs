@@ -6,10 +6,8 @@
 
         public string Id { get; private set; }
 
-        public OverlappingModelTile(TileConfig tileConfig, int rotation)
+        public OverlappingModelTile(TileConfig tileConfig, int rotation) : base(tileConfig, rotation)
         {
-            Config = tileConfig;
-            Rotation = rotation;
             Id = Config.Id + "|" + Rotation;
         }
     }

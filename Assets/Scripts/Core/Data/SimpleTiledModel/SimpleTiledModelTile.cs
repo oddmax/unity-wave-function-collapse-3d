@@ -1,14 +1,9 @@
 ﻿namespace Core.Data.SimpleTiledModel
 {
-    public class SimpleTiledModelTile
+    public class SimpleTiledModelTile : Tile<SimpleTiledModelTileConfig>
     {
-        public SimpleTiledModelTileConfig Config;
-        public int Rotation;
-
-        public SimpleTiledModelTile(SimpleTiledModelTileConfig config, int rotation)
+        public SimpleTiledModelTile(SimpleTiledModelTileConfig config, int rotation) : base(config, rotation)
         {
-            Config = config;
-            Rotation = rotation;
         }
 
         public override string ToString()
