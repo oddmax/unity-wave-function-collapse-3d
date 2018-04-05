@@ -145,7 +145,7 @@ namespace Core.Model
 				counter++;
 			}
 
-			for (int i = 0; i < wave.Length; i++) wave[i] = new bool[T];
+			InitWave();
 
 			Func<byte[], byte[], int, int, bool> agrees = (p1, p2, dx, dy) =>
 			{
