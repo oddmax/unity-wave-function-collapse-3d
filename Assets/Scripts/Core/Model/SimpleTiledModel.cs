@@ -20,15 +20,12 @@ namespace Core.Model
 
 		List<SimpleTiledModelTile> tiles;
 		List<string> tilenames;
-		bool black;
 
-		public SimpleTiledModel(InputSimpleTiledModelData inputData, SimpleTiledModelParams modelParams, string subsetName, int width, int height, bool periodic,
-			bool black) : base(modelParams)
+		public SimpleTiledModel(InputSimpleTiledModelData inputData, SimpleTiledModelParams modelParams) : base(modelParams)
 		{
-			this.periodic = periodic;
-			this.black = black;
+		    periodic = modelParams.Periodic;
 
-			List<string> subset = inputData.GetSubset(subsetName);
+			var subset = inputData.GetSubset(modelParams.SubsetName);
 
 			tiles = new List<SimpleTiledModelTile>();
 			tilenames = new List<string>();
@@ -37,48 +34,45 @@ namespace Core.Model
 			List<int[]> action = new List<int[]>();
 			Dictionary<string, int> firstOccurrence = new Dictionary<string, int>();
 
-			foreach (var tileConfig in inputData.TileConfigs)
+			foreach (var tileConfig in inputData.TileConfigData.ConfigsList)
 			{
-				string tilename = tileConfig.Id;
-				if (subset != null && !subset.Contains(tilename)) continue;
+				if (subset != null && !subset.Contains(tileConfig.Id)) continue;
 
-				Func<int, int> a, b;
+				Func<int, int> rotationTranfrom, mirrorTranform;
 				int cardinality;
 
-				SymmetryType sym = tileConfig.Symmetry;
-				if (sym == SymmetryType.L)
+				var symmmetry = tileConfig.Symmetry;
+				switch (symmmetry)
 				{
-					cardinality = 4;
-					a = i => (i + 1) % 4;
-					b = i => i % 2 == 0 ? i + 1 : i - 1;
-				}
-				else if (sym == SymmetryType.T)
-				{
-					cardinality = 4;
-					a = i => (i + 1) % 4;
-					b = i => i % 2 == 0 ? i : 4 - i;
-				}
-				else if (sym == SymmetryType.I)
-				{
-					cardinality = 2;
-					a = i => 1 - i;
-					b = i => i;
-				}
-				else if (sym == SymmetryType.Slash)
-				{
-					cardinality = 2;
-					a = i => 1 - i;
-					b = i => 1 - i;
-				}
-				else
-				{
-					cardinality = 1;
-					a = i => i;
-					b = i => i;
+					case SymmetryType.L:
+						cardinality = 4;
+						rotationTranfrom = i => (i + 1) % 4;
+						mirrorTranform = i => i % 2 == 0 ? i + 1 : i - 1;
+						break;
+					case SymmetryType.T:
+						cardinality = 4;
+						rotationTranfrom = i => (i + 1) % 4;
+						mirrorTranform = i => i % 2 == 0 ? i : 4 - i;
+						break;
+					case SymmetryType.I:
+						cardinality = 2;
+						rotationTranfrom = i => 1 - i;
+						mirrorTranform = i => i;
+						break;
+					case SymmetryType.Slash:
+						cardinality = 2;
+						rotationTranfrom = i => 1 - i;
+						mirrorTranform = i => 1 - i;
+						break;
+					default:
+						cardinality = 1;
+						rotationTranfrom = i => i;
+						mirrorTranform = i => i;
+						break;
 				}
 
 				T = action.Count;
-				firstOccurrence.Add(tilename, T);
+				firstOccurrence.Add(tileConfig.Id, T);
 
 				int[][] map = new int[cardinality][];
 				for (int t = 0; t < cardinality; t++)
@@ -86,15 +80,18 @@ namespace Core.Model
 					map[t] = new int[8];
 
 					map[t][0] = t;
-					map[t][1] = a(t);
-					map[t][2] = a(a(t));
-					map[t][3] = a(a(a(t)));
-					map[t][4] = b(t);
-					map[t][5] = b(a(t));
-					map[t][6] = b(a(a(t)));
-					map[t][7] = b(a(a(a(t))));
+					map[t][1] = rotationTranfrom(t);
+					map[t][2] = rotationTranfrom(rotationTranfrom(t));
+					map[t][3] = rotationTranfrom(rotationTranfrom(rotationTranfrom(t)));
+					map[t][4] = mirrorTranform(t);
+					map[t][5] = mirrorTranform(rotationTranfrom(t));
+					map[t][6] = mirrorTranform(rotationTranfrom(rotationTranfrom(t)));
+					map[t][7] = mirrorTranform(rotationTranfrom(rotationTranfrom(rotationTranfrom(t))));
 
-					for (int s = 0; s < 8; s++) map[t][s] += T;
+					for (int s = 0; s < 8; s++)
+					{
+						map[t][s] += T;
+					}
 
 					action.Add(map[t]);
 				}
@@ -119,7 +116,7 @@ namespace Core.Model
 				for (int t = 0; t < T; t++) tempPropagator[d][t] = new bool[T];
 			}
 
-			for (int i = 0; i < wave.Length; i++) wave[i] = new bool[T];
+			InitWave();
 
 			foreach (NeighborData neighbor in inputData.NeighborDatas)
 			{
@@ -128,9 +125,9 @@ namespace Core.Model
 				if (subset != null && (!subset.Contains(leftNeighbor) || !subset.Contains(rightNeighbor))) continue;
 
 				var leftRotation = neighbor.LeftRotation;
-				int rightRotation = neighbor.RightRotation;
+				var rightRotation = neighbor.RightRotation;
 
-				int L = action[firstOccurrence[leftNeighbor]][leftRotation], D = action[L][1];
+				int L = action[firstOccurrence[leftNeighbor]][leftRotation], D = action[L ][1];
 				int R = action[firstOccurrence[rightNeighbor]][rightRotation], U = action[R][1];
 
 				tempPropagator[0][R][L] = true;
@@ -158,19 +155,25 @@ namespace Core.Model
 				for (int t = 0; t < T; t++) sparsePropagator[d][t] = new List<int>();
 			}
 
-			for (int d = 0; d < 4; d++)
-			for (int t1 = 0; t1 < T; t1++)
+			for (var d = 0; d < 4; d++)
 			{
-				List<int> sp = sparsePropagator[d][t1];
-				bool[] tp = tempPropagator[d][t1];
+				for (var t1 = 0; t1 < T; t1++)
+				{
+					List<int> sp = sparsePropagator[d][t1];
+					bool[] tp = tempPropagator[d][t1];
 
-				for (int t2 = 0; t2 < T; t2++)
-					if (tp[t2])
-						sp.Add(t2);
+					for (int t2 = 0; t2 < T; t2++)
+					{
+						if (tp[t2])
+						{
+							sp.Add(t2);
+						}
+					}
 
-				int ST = sp.Count;
-				propagator[d][t1] = new int[ST];
-				for (int st = 0; st < ST; st++) propagator[d][t1][st] = sp[st];
+					int ST = sp.Count;
+					propagator[d][t1] = new int[ST];
+					for (int st = 0; st < ST; st++) propagator[d][t1][st] = sp[st];
+				}
 			}
 		}
 
@@ -193,7 +196,7 @@ namespace Core.Model
 						if (x1 == FMX - 1)
 						{
 							if (!periodic) continue;
-							else x2 = 0;
+							x2 = 0;
 						}
 						else x2 = x1 + 1;
 					}
@@ -202,7 +205,7 @@ namespace Core.Model
 						if (y1 == 0)
 						{
 							if (!periodic) continue;
-							else y2 = FMY - 1;
+							y2 = FMY - 1;
 						}
 						else y2 = y1 - 1;
 					}
@@ -211,7 +214,7 @@ namespace Core.Model
 						if (x1 == 0)
 						{
 							if (!periodic) continue;
-							else x2 = FMX - 1;
+							x2 = FMX - 1;
 						}
 						else x2 = x1 - 1;
 					}
@@ -220,7 +223,7 @@ namespace Core.Model
 						if (y1 == FMY - 1)
 						{
 							if (!periodic) continue;
-							else y2 = 0;
+							y2 = 0;
 						}
 						else y2 = y1 + 1;
 					}

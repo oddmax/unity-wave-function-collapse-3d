@@ -11,12 +11,18 @@ namespace Core.Data.SimpleTiledModel
             TileConfigData = tileConfigData;
         }
 
-        public List<SimpleTiledModelTileConfig> TileConfigs { get; set; }
         public List<NeighborData> NeighborDatas { get; private set; }
+        
+        public byte[] tilesConfigIds;
 
         public List<string> GetSubset(string subsetName)
         {
-            throw new System.NotImplementedException();
+            if (subsetName == SimpleTiledModelParams.DEFAULT_SUBSET)
+            {
+                return null;
+            }
+
+            return null;
         }
 
         public void SetNeighbors(List<NeighborData> neighborDatas)
