@@ -15,11 +15,14 @@
         /// Defines which subset of tiles to use from Input data
         /// </summary>
         public string SubsetName { get; private set; }
-        
+
+        public bool Black { get; set; }
+
         public SimpleTiledModelParams(int width, int depth, bool periodic = false, string subsetName = DEFAULT_SUBSET) : base(width, depth)
         {
             Periodic = periodic;
             SubsetName = subsetName;
+            Black = false;
         }
     }
 }

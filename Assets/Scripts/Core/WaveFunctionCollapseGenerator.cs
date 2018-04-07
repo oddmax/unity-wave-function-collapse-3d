@@ -41,7 +41,7 @@ namespace Core
 	    private int iterations = 0;
 
 	    private OverlappingModel overlappingModel;
-	    private SimpleTiledModel simpleTiledModel;
+	    private NewSimpleTiledModel simpleTiledModel;
 	    private InputOverlappingData inputOverlappingData;
 	    private Coroutine runningCoroutine;
 
@@ -76,7 +76,7 @@ namespace Core
 		    var inputData = dataProvider.GetInputSimpleTiledData();
 		    var modelParams = new SimpleTiledModelParams(width, depth, periodicOutput);
 		    
-		    simpleTiledModel = new SimpleTiledModel(inputData, modelParams);
+		    simpleTiledModel = new NewSimpleTiledModel(inputData, modelParams);
 		    renderer.Init(simpleTiledModel);
 		    
 		    runningCoroutine = StartCoroutine(simpleTiledModel.RunViaEnumerator(0, iterations, OnResult, OnIteration));
