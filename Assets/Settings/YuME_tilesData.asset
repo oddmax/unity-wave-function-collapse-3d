@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1923b6bdd0a346ecafb5d8f590b6ab38, type: 3}
+  m_Name: YuME_tilesData
+  m_EditorClassIdentifier: 
+  SymmetryX:
+  - {fileID: 195650, guid: 4322256955695a94a84fec782ec10d7a, type: 2}
+  - {fileID: 132138, guid: fa911294c080ba947bd5abaf4b8d9670, type: 2}
+  - {fileID: 103346, guid: b91147827ce16b34abac85b60a64583c, type: 2}
+  - {fileID: 113162, guid: cd00fcff2e059af4384f71f397f4bc86, type: 2}
+  - {fileID: 107076, guid: a5ac0b3853a16744ab510b9a3f5d8c16, type: 2}
+  - {fileID: 182142, guid: c0e8baa35ad595945b33060be012d85f, type: 2}
+  - {fileID: 132410, guid: a13bbee944664ef4ba585af046e7e44c, type: 2}
+  - {fileID: 123044, guid: e9f71fbb2180dad45a9d66c715b657b8, type: 2}
+  SymmetryL:
+  - {fileID: 176490, guid: 4f29514a127955646a6cb15306f851a1, type: 2}
+  - {fileID: 138098, guid: d5bde9e99b7aa9344a7f8d6049cb7c64, type: 2}
+  - {fileID: 140668, guid: b87a0e34870d67c42aead4a981c2de59, type: 2}
+  - {fileID: 177136, guid: af261c83bca2aaf4f924fe55e44a7735, type: 2}
+  - {fileID: 169638, guid: f75948054f750d24786167e1f703a172, type: 2}
+  - {fileID: 118166, guid: 30246b1895fa2554dabd18f570585b03, type: 2}
+  - {fileID: 109072, guid: de0af26bba7e3924592f3387d5766203, type: 2}
+  - {fileID: 159662, guid: 72b9fbf00e213644fa2583b3c94789bd, type: 2}
+  - {fileID: 164600, guid: 2b766c801d18988418c5c8afa51be0a5, type: 2}
+  - {fileID: 172836, guid: 6cdb506b2750aea4c8dfeadb13546525, type: 2}
+  SymmetryT:
+  - {fileID: 156722, guid: dd65960330d8c7a4ca6d67202dbd1d7c, type: 2}
+  - {fileID: 157390, guid: d7be12575c1d845498108a6fafcf195b, type: 2}
+  - {fileID: 108930, guid: 2ddaf67cea161f34a932e666264b2a75, type: 2}
+  - {fileID: 155070, guid: 30ad53a9f3d02724987b3dd7e71da001, type: 2}
+  - {fileID: 111424, guid: 4bd0cb26b2b48e244833225ac39dcc9a, type: 2}
+  - {fileID: 121182, guid: 948aa054aef2381438d26a3e4e6e57a6, type: 2}
+  - {fileID: 168784, guid: 7ff2be065a47436438d0aba020472f82, type: 2}
+  SymmetryI:
+  - {fileID: 111108, guid: 3c6d8fa93876a7340af4c1148db1adba, type: 2}
+  SymmetrySlash: []

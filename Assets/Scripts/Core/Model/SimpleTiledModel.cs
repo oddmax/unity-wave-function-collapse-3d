@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Text;
 using Core.Data;
 using Core.Data.SimpleTiledModel;
+using UnityEngine;
 
 namespace Core.Model
 {
@@ -42,6 +43,7 @@ namespace Core.Model
 				int cardinality;
 
 				var symmmetry = tileConfig.Symmetry;
+				Debug.Log(symmmetry);
 				switch (symmmetry)
 				{
 					case SymmetryType.L:
@@ -99,7 +101,9 @@ namespace Core.Model
 				for (int t = 0; t < cardinality; t++)
 				{
 					tiles.Add(new SimpleTiledModelTile(tileConfig, t));
+					
 					tilenames.Add(tileConfig.Id + " " + t);
+					Debug.Log(tilenames.Count + " >>>> " + tilenames[tilenames.Count - 1]);
 					tempStationary.Add(tileConfig.Weight);
 				}
 			}
@@ -120,8 +124,8 @@ namespace Core.Model
 
 			foreach (NeighborData neighbor in inputData.NeighborDatas)
 			{
-				var leftNeighbor = neighbor.LeftNeighborId;
-				var rightNeighbor = neighbor.RightNeighborId;
+				var leftNeighbor = neighbor.LeftNeighborConfig.Id;
+				var rightNeighbor = neighbor.RightNeighborConfig.Id;
 				if (subset != null && (!subset.Contains(leftNeighbor) || !subset.Contains(rightNeighbor))) continue;
 
 				var leftRotation = neighbor.LeftRotation;

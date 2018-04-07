@@ -58,49 +58,76 @@ namespace Core.InputProviders
                 FillPrefabMap();
             }
             
-            var tileConfigData = CreateTileConfigData(tilePrefab =>
+            var tileConfigsData = CreateTileConfigData(tilePrefab =>
             {
                 var symmetry = symmetrySets.GetSymmetryByTileName(tilePrefab.name);
+                Debug.Log(tilePrefab.name + " " + symmetry);
                 var config = new SimpleTiledModelTileConfig(tilePrefab, symmetry);
                 
                 return config;
             });
             
-            var inputData = new InputSimpleTiledModelData(tileConfigData);
+            var inputData = new InputSimpleTiledModelData(tileConfigsData);
             var tiles = new SimpleTiledModelTile[width, depth];
             
             ExecuteForEachTile((tileGo, x, z, rotation) =>
             {
-                tiles[x, z] = new SimpleTiledModelTile(tileConfigData.GetConfig(tileGo.name), rotation);
+                tiles[x, z] = new SimpleTiledModelTile(tileConfigsData.GetConfig(tileGo.name), rotation);
             });
 
             var neighbors = new Dictionary<string, NeighborData>();
-            ExecuteForEachTile((tileGo, x, z, rotation) =>
+
+            for (int x = 0; x < width; x++)
             {
-                var currentTile = tiles[x, z];
-                for (int offset = 0; offset < 2; offset++){
-                    int rx = x + 1 - offset;
-                    int rz = z + offset;
-                    if (rx < width && rz < depth)
-                    {
-                        var currentTileRotation = (currentTile.Rotation + offset)%4;
-                        var nextTile = tiles[x, z];
-                        var nextTileRotation = (nextTile.Rotation + offset)%4;
+                for (int z = 0; z < depth; z++)
+                {
+                    var currentTile = tiles[x, z];
+                    if (currentTile == null) continue;
+                    
+                    for (var offset = 0; offset < 2; offset++){
+                        var rx = x + 1 - offset;
+                        var rz = z + offset;
+                        if (rx >= width || rz >= depth) continue;
+                    
+                        var currentTileRotation = (currentTile.Rotation - offset);
+                        currentTileRotation = currentTileRotation < 0 ? 3 : currentTileRotation;
+                        var nextTile = tiles[rx, rz];
+                        
+                        if (nextTile == null) continue;
+                        
+                        var nextTileRotation = (nextTile.Rotation - offset);
+                        nextTileRotation = nextTileRotation < 0 ? 3 : nextTileRotation;
                         string key = currentTile.Config.Id + "." + currentTileRotation + "|" + nextTile.Config.Id + "." + nextTileRotation ;
                         
                         if (neighbors.ContainsKey(key)) continue;
+                        Debug.Log(key);
                         
                         neighbors.Add(key, new NeighborData(currentTile.Config, nextTile.Config, currentTileRotation, nextTileRotation));
-                        Debug.DrawLine(
-                            transform.TransformPoint(new Vector3(x + 0f, 1f, z + 0f)),
-                            transform.TransformPoint(new Vector3(x + 1f - offset, 1f, z + 0f + offset)), Color.red, 9.0f, false);
+
+                        DrawDebugLine(x, z, rx, rz);
                     }
                 }
-            });
-
+            }
+            
             inputData.SetNeighbors(neighbors.Values.ToList());
 
             return inputData;
+        }
+
+        private void DrawDebugLine(int xs, int zs, int xt, int zt)
+        {
+            var offsetWidth = Mathf.CeilToInt(width / 2);
+            var offsetDepth = Mathf.CeilToInt(depth / 2);
+
+            xs -= offsetWidth;
+            zs -= offsetDepth; 
+            
+            xt -= offsetWidth;
+            zt -= offsetDepth;
+            
+            Debug.DrawLine(
+                transform.TransformPoint(new Vector3(xs, 0.5f, zs)),
+                transform.TransformPoint(new Vector3(xt, 0.5f, zt)), Color.red, 9.0f, false);
         }
 
         private TileConfigData<T> CreateTileConfigData<T>(Func<GameObject, T> creator) where T : TileConfig
@@ -128,7 +155,7 @@ namespace Core.InputProviders
                 {
                     var x = Mathf.RoundToInt(child.localPosition.x) + offsetWidth;
                     var z = Mathf.RoundToInt(child.localPosition.z) + offsetDepth;
-                    int rotation = (int)((360 - child.localEulerAngles.z)/90);
+                    int rotation = (int)((360 - Mathf.Round(child.localEulerAngles.y))/90);
                     if (rotation == 4)
                     {
                         rotation = 0;

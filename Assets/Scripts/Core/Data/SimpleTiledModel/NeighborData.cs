@@ -2,8 +2,6 @@
 {
     public class NeighborData
     {
-        public string LeftNeighborId { get; set; }
-        public string RightNeighborId { get; set; }
         public TileConfig LeftNeighborConfig { get; set; }
         public TileConfig RightNeighborConfig { get; set; }
         public int LeftRotation { get; set; }

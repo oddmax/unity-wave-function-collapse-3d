@@ -90,7 +90,8 @@ namespace Core
                 }
                 tileObject = Instantiate(tile.Config.Prefab, transform);
                 tileObject.transform.localPosition = new Vector3(x, 0, z);
-                tileObject.transform.localEulerAngles = new Vector3(0, 0, 360 - tile.Rotation * 90);
+                Debug.Log("Rotation " + tile.Rotation);
+                tileObject.transform.localEulerAngles = new Vector3(0, 360 - tile.Rotation * 90, 0);
                 return tileObject;
             }
 

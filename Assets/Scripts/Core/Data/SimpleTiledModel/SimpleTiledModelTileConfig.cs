@@ -9,6 +9,8 @@ namespace Core.Data.SimpleTiledModel
 
         public SimpleTiledModelTileConfig(GameObject prefab, SymmetryType symmetry) : base(prefab)
         {
+            Weight = 1;
+            Symmetry = symmetry;
         }
     }
 }

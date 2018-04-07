@@ -47,7 +47,8 @@ namespace Core
 
 	    private void Start()
 	    {
-		    GenerateOverlappingOutput();
+		    //GenerateSimpleTiledOutput();
+		    //GenerateOverlappingOutput();
 	    }
 
 	    public void ExtractSimpleTiledData()

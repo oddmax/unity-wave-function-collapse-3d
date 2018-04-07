@@ -141,6 +141,7 @@ namespace Core.Model
 			//There is the cell with no possible values which means that we found a contradiction
 			if (indexWithLowestEntropy == null) return false;
 			
+			Debug.Log("Cell with lowest entropy : " + indexWithLowestEntropy);
 			// All values has collapsed, fill result in observed function
 			if (indexWithLowestEntropy == -1)
 			{
@@ -199,7 +200,7 @@ namespace Core.Model
 					indexWithLowestEntropy = i;
 				}
 			}
-
+			
 			return indexWithLowestEntropy;
 		}
 
