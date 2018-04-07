@@ -2,10 +2,10 @@
 {
     public class NeighborData
     {
-        public TileConfig LeftNeighborConfig { get; set; }
-        public TileConfig RightNeighborConfig { get; set; }
-        public int LeftRotation { get; set; }
-        public int RightRotation { get; set; }
+        public TileConfig LeftNeighborConfig { get; private set; }
+        public TileConfig RightNeighborConfig { get; private set; }
+        public int LeftRotation { get; private set; }
+        public int RightRotation { get; private set; }
         
         public NeighborData(TileConfig leftNeighborConfig, TileConfig rightNeighborConfig, int leftRotation, int rightRotation)
         {
