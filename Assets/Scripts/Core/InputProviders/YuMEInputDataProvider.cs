@@ -88,15 +88,14 @@ namespace Core.InputProviders
                         var rx = x + 1 - offset;
                         var rz = z + offset;
                         if (rx >= width || rz >= depth) continue;
-                    
-                        var currentTileRotation = (currentTile.Rotation - offset);
-                        currentTileRotation = currentTileRotation < 0 ? 3 : currentTileRotation;
+
+                        var currentTileRotation = Card(currentTile.Rotation + offset);
                         var nextTile = tiles[rx, rz];
                         
                         if (nextTile == null) continue;
                         
-                        var nextTileRotation = (nextTile.Rotation - offset);
-                        nextTileRotation = nextTileRotation < 0 ? 3 : nextTileRotation;
+                        var nextTileRotation = Card(currentTile.Rotation + offset);
+                        
                         string key = currentTile.Config.Id + "." + currentTileRotation + "|" + nextTile.Config.Id + "." + nextTileRotation ;
                         
                         if (neighbors.ContainsKey(key)) continue;
@@ -112,6 +111,10 @@ namespace Core.InputProviders
             inputData.SetNeighbors(neighbors.Values.ToList());
 
             return inputData;
+        }
+        
+        public int Card(int n){
+            return (n%4 + 4)%4;
         }
 
         private void DrawDebugLine(int xs, int zs, int xt, int zt)
@@ -155,11 +158,8 @@ namespace Core.InputProviders
                 {
                     var x = Mathf.RoundToInt(child.localPosition.x) + offsetWidth;
                     var z = Mathf.RoundToInt(child.localPosition.z) + offsetDepth;
-                    int rotation = (int)((360 - Mathf.Round(child.localEulerAngles.y))/90);
-                    if (rotation == 4)
-                    {
-                        rotation = 0;
-                    }
+                    int rotation = (int)((360 + Mathf.Round(child.localEulerAngles.y))/90);
+                    rotation = rotation % 4;
 
                     action(child.gameObject, x, z, rotation);
                 } 
