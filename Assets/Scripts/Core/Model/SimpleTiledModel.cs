@@ -131,7 +131,7 @@ namespace Core.Model
 				var leftRotation = neighbor.LeftRotation;
 				var rightRotation = neighbor.RightRotation;
 
-				int L = action[firstOccurrence[leftNeighbor]][leftRotation], D = action[L ][1];
+				int L = action[firstOccurrence[leftNeighbor]][leftRotation], D = action[L][1];
 				int R = action[firstOccurrence[rightNeighbor]][rightRotation], U = action[R][1];
 
 				tempPropagator[0][R][L] = true;
