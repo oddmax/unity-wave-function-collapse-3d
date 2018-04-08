@@ -14,7 +14,7 @@ using Eppy;
 using UnityEngine;
 using Random = System.Random;
 
-abstract class Model3d<PARAM> : IModel3d where PARAM : WaveFunctionCollapseModelParams
+public abstract class Model3d<PARAM> : IModel3d where PARAM : WaveFunctionCollapseModelParams
 {
 	public const int DIRECTIONS_AMOUNT = 6;
 	
@@ -122,7 +122,6 @@ abstract class Model3d<PARAM> : IModel3d where PARAM : WaveFunctionCollapseModel
 		}
 
 		startingEntropy = Math.Log(sumOfWeights) - sumOfWeightLogWeights / sumOfWeights;
-		Debug.Log(">>>>>>>>>>> " + startingEntropy);
 
 		sumsOfOnes = new int[FMX * FMY * FMZ];
 		sumsOfWeights = new double[FMX * FMY * FMZ];
@@ -247,8 +246,6 @@ abstract class Model3d<PARAM> : IModel3d where PARAM : WaveFunctionCollapseModel
 
 		sum = sumsOfWeights[i];
 		entropies[i] -= sumsOfWeightLogWeights[i] / sum - Math.Log(sum);
-		
-		Debug.Log(">>> " + i + " >>>>>>>> " + entropies[i]);
 	}
 
 	protected virtual void Clear()

@@ -68,15 +68,15 @@ namespace Core.Data.OverlappingModel
             return null;
         }
         
-        public void SetTile(TileConfig tileConfig, int x, int y, int rotation)
+        public void SetTile(TileConfig tileConfig, int x, int z, int rotation)
         {
             var tile = new OverlappingModelTile(tileConfig, rotation);
-            tiles[x, y] = tile;
+            tiles[x, z] = tile;
         }
 
-        public OverlappingModelTile GetTileAt(int x, int y)
+        public OverlappingModelTile GetTileAt(int x, int z)
         {
-            return tiles[x, y];
+            return tiles[x, z];
         }
     }
 }

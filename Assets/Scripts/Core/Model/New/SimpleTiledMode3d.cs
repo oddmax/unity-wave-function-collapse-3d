@@ -14,7 +14,7 @@ using Core.Data;
 using Core.Data.SimpleTiledModel;
 using UnityEngine;
 
-class SimpleTiledMode3d : Model3d<SimpleTiledModelParams>
+public class SimpleTiledMode3d : Model3d<SimpleTiledModelParams>
 {
 	List<SimpleTiledModelTile> tiles;
 	List<string> tilenames;

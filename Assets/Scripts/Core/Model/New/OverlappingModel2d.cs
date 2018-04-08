@@ -13,7 +13,7 @@ using Core.Data.OverlappingModel;
 
 namespace Core.Model.New
 {
-	class NewOverlappingModel : NewModel<OverlappingModelParams>
+	public class OverlappingModel2d : Model2d<OverlappingModelParams>
 	{
 		int N;
 		byte[][] patterns;
@@ -21,7 +21,7 @@ namespace Core.Model.New
 		
 		public InputOverlappingData InputData { get; private set; }
 
-		public NewOverlappingModel(InputOverlappingData inputData, OverlappingModelParams modelParams)
+		public OverlappingModel2d(InputOverlappingData inputData, OverlappingModelParams modelParams)
 			: base(modelParams)
 		{
 			InputData = inputData;

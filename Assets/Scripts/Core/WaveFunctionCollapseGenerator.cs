@@ -3,6 +3,7 @@ using Core.Data.OverlappingModel;
 using Core.Data.SimpleTiledModel;
 using Core.InputProviders;
 using Core.Model;
+using Core.Model.New;
 using UnityEditor;
 using UnityEngine;
 
@@ -43,7 +44,7 @@ namespace Core
 	    [SerializeField] 
 	    private int iterations = 0;
 
-	    private OverlappingModel overlappingModel;
+	    private OvelappingModel2dWrapper overlappingModel;
 	    private SimpleTiledMode3d simpleTiledModel;
 	    private InputOverlappingData inputOverlappingData;
 	    private Coroutine runningCoroutine;
@@ -61,7 +62,6 @@ namespace Core
 
 	    public void GenerateOverlappingOutput()
 	    {
-		    /*
 		    inputOverlappingData = dataProvider.GetInputOverlappingData();
 		    var modelParams = new OverlappingModelParams(width, height, depth, patternSize);
 		    modelParams.PeriodicInput = periodicInput;
@@ -69,11 +69,10 @@ namespace Core
 		    modelParams.Symmetry = symmetry;
 		    modelParams.Ground = foundation;
 		    
-		    overlappingModel = new OverlappingModel(inputOverlappingData, modelParams);
+		    overlappingModel = new OvelappingModel2dWrapper(inputOverlappingData, modelParams);
 		    renderer.Init(overlappingModel);
 		    
-		    runningCoroutine = StartCoroutine(overlappingModel.RunViaEnumerator(0, iterations, OnResult, OnIteration));
-		    */
+		    runningCoroutine = StartCoroutine(overlappingModel.Model.RunViaEnumerator(0, iterations, OnResult, OnIteration));
 	    }
 
 	    public void GenerateSimpleTiledOutput()

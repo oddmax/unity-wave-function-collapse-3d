@@ -14,7 +14,7 @@ using Core.Data;
 using Core.Data.SimpleTiledModel;
 using UnityEngine;
 
-class NewSimpleTiledModel : NewModel<SimpleTiledModelParams>
+class NewSimpleTiledModel : Model2d<SimpleTiledModelParams>
 {
 	List<SimpleTiledModelTile> tiles;
 	List<string> tilenames;
