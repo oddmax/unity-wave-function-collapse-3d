@@ -140,6 +140,7 @@ MonoBehaviour:
   dataProvider: {fileID: 1834213549}
   renderer: {fileID: 1741517135}
   width: 20
+  height: 1
   depth: 20
   patternSize: 3
   periodicInput: 0
@@ -1387,6 +1388,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   width: 10
+  height: 1
   depth: 10
   levelsList:
   - {fileID: 253645557}
