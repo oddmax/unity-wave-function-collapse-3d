@@ -2,14 +2,14 @@
 {
     public class CellState
     {
-        public float EntropyLevel;
+        public double EntropyLevel { get; private set; }
         
         /// <summary>
         /// Going to be null if Entropy level is more than 0
         /// </summary>
         public ITile Tile { get; private set; }
 
-        public CellState(float entropyLevel, ITile tileIndex)
+        public CellState(double entropyLevel, ITile tileIndex)
         {
             EntropyLevel = entropyLevel;
             Tile = tileIndex;

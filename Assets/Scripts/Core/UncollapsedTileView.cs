@@ -7,9 +7,10 @@ namespace Core
         [SerializeField]
         private Transform sphere;
         
-        public void UpdateState(float entropyLevel)
+        public void UpdateState(double entropyLevel)
         {
-            sphere.localScale = new Vector3(entropyLevel, entropyLevel, entropyLevel);
+            float entropy = 1f - (float)entropyLevel;
+            sphere.localScale = new Vector3(entropy, entropy, entropy);
         }
     }
 }

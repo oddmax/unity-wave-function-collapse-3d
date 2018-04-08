@@ -216,7 +216,7 @@ class NewSimpleTiledModel : NewModel<SimpleTiledModelParams>
 	{
 		bool[] a = wave[x + y * FMX];
 			
-		float entropy;
+		double entropy;
 		int? collapsedPatternId;
 		CalculateEntropyAndPatternIdAt(x, y, out entropy, out collapsedPatternId);
 

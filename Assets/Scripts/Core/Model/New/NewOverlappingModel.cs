@@ -167,7 +167,7 @@ namespace Core.Model.New
 			int dx = x < FMX - N + 1 ? 0 : N - 1;
 
 			int? collapsedPatternId;
-			float entropy;
+			double entropy;
 			CalculateEntropyAndPatternIdAt(x - dx, y - dy, out entropy, out collapsedPatternId);
 
 			ITile tile = null;

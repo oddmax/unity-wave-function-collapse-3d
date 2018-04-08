@@ -108,6 +108,7 @@ abstract class NewModel<PARAM> : IModel where PARAM : WaveFunctionCollapseModelP
 		}
 
 		startingEntropy = Math.Log(sumOfWeights) - sumOfWeightLogWeights / sumOfWeights;
+		Debug.Log(">>>>>>>>>>> " + startingEntropy);
 
 		sumsOfOnes = new int[FMX * FMY];
 		sumsOfWeights = new double[FMX * FMY];
@@ -215,6 +216,8 @@ abstract class NewModel<PARAM> : IModel where PARAM : WaveFunctionCollapseModelP
 
 		sum = sumsOfWeights[i];
 		entropies[i] -= sumsOfWeightLogWeights[i] / sum - Math.Log(sum);
+		
+		Debug.Log(">>> " + i + " >>>>>>>> " + entropies[i]);
 	}
 
 	protected virtual void Clear()
@@ -234,7 +237,7 @@ abstract class NewModel<PARAM> : IModel where PARAM : WaveFunctionCollapseModelP
 		}
 	}
 	
-	protected void CalculateEntropyAndPatternIdAt(int x, int y, out float entropy, out int? patternId)
+	protected void CalculateEntropyAndPatternIdAt(int x, int y, out double entropy, out int? patternId)
 	{
 		int indexInWave = x + y * FMX;
 		int amount = 0;
@@ -254,7 +257,7 @@ abstract class NewModel<PARAM> : IModel where PARAM : WaveFunctionCollapseModelP
 			patternId = null;
 		}
 			
-		entropy = (float)amount / T;
+		entropy = entropies[indexInWave] / startingEntropy;
 	}
 
 	protected abstract bool OnBoundary(int x, int y);
