@@ -10,55 +10,56 @@ namespace Core
         private GameObject uncollapsedTilePrefab;
         
         private int width;
+        private int height;
         private int depth;
         private float gridSize = 1f;
-        private IModel model;
-        private GameObject[,] tiles;
+        private IModel3d model;
+        private GameObject[,,] tiles;
 
-        public void Init(IModel model)
+        public void Init(IModel3d model)
         {
             this.model = model;
             Clear();
             depth = model.ModelParam.Depth;
+            height = model.ModelParam.Height;
             width = model.ModelParam.Width;
             
-            tiles = new GameObject[width, depth];
+            tiles = new GameObject[width, height, depth];
         }
 
         public void UpdateStates()
         {
             Debug.Log("Update states");
             for (var x = 0; x < width; x++)
+            for (var y = 0; y < height; y++)
+            for (var z = 0; z < depth; z++)
             {
-                for (var z = 0; z < depth; z++)
+                var cellState = model.GetCellStateAt(x, y, z);
+                var tileGameObject = tiles[x, y, z];
+                if (tileGameObject != null)
                 {
-                    var cellState = model.GetCellStateAt(x, z);
-                    var tileGameObject = tiles[x, z];
-                    if (tileGameObject != null)
+                    var uncollapsedTileView = tileGameObject.GetComponent<UncollapsedTileView>();
+                    if (uncollapsedTileView != null)
                     {
-                        var uncollapsedTileView = tileGameObject.GetComponent<UncollapsedTileView>();
-                        if (uncollapsedTileView != null)
+                        uncollapsedTileView.UpdateState(cellState.EntropyLevel);
+                        if (cellState.Collapsed)
                         {
-                            uncollapsedTileView.UpdateState(cellState.EntropyLevel);
-                            if (cellState.Collapsed)
+                            if (Application.isPlaying)
                             {
-                                if (Application.isPlaying)
-                                {
-                                    Destroy(tileGameObject);
-                                }
-                                else
-                                {
-                                    DestroyImmediate(tileGameObject);
-                                }
-                                tileGameObject = null;
+                                Destroy(tileGameObject);
                             }
+                            else
+                            {
+                                DestroyImmediate(tileGameObject);
+                            }
+                            tileGameObject = null;
                         }
                     }
+                }
 
-                    if (tileGameObject == null)
-                    {
-                        tiles[x, z] = CreateTile(x, z, cellState);
-                    }
+                if (tileGameObject == null)
+                {
+                    tiles[x, y, z] = CreateTile(x, y, z, cellState);
                 }
             }
         }
@@ -78,7 +79,7 @@ namespace Core
             }
         }
 
-        private GameObject CreateTile(int x, int z, CellState cellState)
+        private GameObject CreateTile(int x, int y, int z, CellState cellState)
         {
             GameObject tileObject;
             if (cellState.Collapsed)
@@ -89,22 +90,22 @@ namespace Core
                     return null;
                 }
                 tileObject = Instantiate(tile.Config.Prefab, transform);
-                tileObject.transform.localPosition = new Vector3(x, 0, z);
+                tileObject.transform.localPosition = new Vector3(x, y, z);
                 Debug.Log("Rotation " + tile.Rotation);
                 tileObject.transform.localEulerAngles = new Vector3(0, tile.Rotation * 90, 0);
                 return tileObject;
             }
 
             tileObject = Instantiate(uncollapsedTilePrefab, transform);
-            tileObject.transform.localPosition = new Vector3(x, 0, z);
+            tileObject.transform.localPosition = new Vector3(x, y, z);
             return tileObject;
         }
         
         private void OnDrawGizmos(){
             Gizmos.color = Color.cyan;
             Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.DrawWireCube(new Vector3(width*gridSize/2f-gridSize*0.5f, 0f, depth*gridSize/2f-gridSize*0.5f),
-                new Vector3(width*gridSize, gridSize, depth*gridSize));
+            Gizmos.DrawWireCube(new Vector3(width*gridSize/2f-gridSize*0.5f, height*gridSize/2f-gridSize*0.5f, depth*gridSize/2f-gridSize*0.5f),
+                new Vector3(width*gridSize, height*gridSize, depth*gridSize));
         }
     }
 }

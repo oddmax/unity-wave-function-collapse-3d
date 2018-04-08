@@ -20,6 +20,9 @@ namespace Core
 	    private int width;
 	    
 	    [SerializeField] 
+	    private int height;
+	    
+	    [SerializeField] 
 	    private int depth;
 	    
 	    [SerializeField] 
@@ -41,7 +44,7 @@ namespace Core
 	    private int iterations = 0;
 
 	    private OverlappingModel overlappingModel;
-	    private NewSimpleTiledModel simpleTiledModel;
+	    private SimpleTiledMode3d simpleTiledModel;
 	    private InputOverlappingData inputOverlappingData;
 	    private Coroutine runningCoroutine;
 
@@ -58,8 +61,9 @@ namespace Core
 
 	    public void GenerateOverlappingOutput()
 	    {
+		    /*
 		    inputOverlappingData = dataProvider.GetInputOverlappingData();
-		    var modelParams = new OverlappingModelParams(width, depth, patternSize);
+		    var modelParams = new OverlappingModelParams(width, height, depth, patternSize);
 		    modelParams.PeriodicInput = periodicInput;
 		    modelParams.PeriodicOutput = periodicOutput;
 		    modelParams.Symmetry = symmetry;
@@ -69,14 +73,15 @@ namespace Core
 		    renderer.Init(overlappingModel);
 		    
 		    runningCoroutine = StartCoroutine(overlappingModel.RunViaEnumerator(0, iterations, OnResult, OnIteration));
+		    */
 	    }
 
 	    public void GenerateSimpleTiledOutput()
 	    {
 		    var inputData = dataProvider.GetInputSimpleTiledData();
-		    var modelParams = new SimpleTiledModelParams(width, depth, periodicOutput);
+		    var modelParams = new SimpleTiledModelParams(width, height, depth, periodicOutput);
 		    
-		    simpleTiledModel = new NewSimpleTiledModel(inputData, modelParams);
+		    simpleTiledModel = new SimpleTiledMode3d(inputData, modelParams);
 		    renderer.Init(simpleTiledModel);
 		    
 		    runningCoroutine = StartCoroutine(simpleTiledModel.RunViaEnumerator(0, iterations, OnResult, OnIteration));

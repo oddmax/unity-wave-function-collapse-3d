@@ -40,7 +40,7 @@
         /// </summary>
         public int Ground { get; set; }
 
-        public OverlappingModelParams(int width, int depth, int patternSize) : base(width, depth)
+        public OverlappingModelParams(int width, int height, int depth, int patternSize) : base(width, height, depth)
         {
             this.PatternSize = patternSize;
         }

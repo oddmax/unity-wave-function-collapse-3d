@@ -18,7 +18,7 @@
 
         public bool Black { get; set; }
 
-        public SimpleTiledModelParams(int width, int depth, bool periodic = false, string subsetName = DEFAULT_SUBSET) : base(width, depth)
+        public SimpleTiledModelParams(int width, int height, int depth, bool periodic = false, string subsetName = DEFAULT_SUBSET) : base(width, height, depth)
         {
             Periodic = periodic;
             SubsetName = subsetName;
