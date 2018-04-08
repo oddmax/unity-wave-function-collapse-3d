@@ -94,7 +94,7 @@ namespace Core.InputProviders
                         
                         if (nextTile == null) continue;
                         
-                        var nextTileRotation = Card(currentTile.Rotation + offset);
+                        var nextTileRotation = Card(nextTile.Rotation + offset);
                         
                         string key = currentTile.Config.Id + "." + currentTileRotation + "|" + nextTile.Config.Id + "." + nextTileRotation ;
                         
