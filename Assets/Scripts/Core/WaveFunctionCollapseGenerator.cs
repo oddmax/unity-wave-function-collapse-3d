@@ -12,7 +12,7 @@ namespace Core
     public class WaveFunctionCollapseGenerator : MonoBehaviour
     {
 	    [SerializeField] 
-	    private YuMEInputDataProvider dataProvider;
+	    private InputDataProvider dataProvider;
 
 	    [SerializeField] 
 	    private WaveFunctionCollapseRenderer renderer;
@@ -48,17 +48,6 @@ namespace Core
 	    private SimpleTiledMode3d simpleTiledModel;
 	    private InputOverlappingData inputOverlappingData;
 	    private Coroutine runningCoroutine;
-
-	    private void Start()
-	    {
-		    //GenerateSimpleTiledOutput();
-		    //GenerateOverlappingOutput();
-	    }
-
-	    public void ExtractSimpleTiledData()
-	    {
-		    var inputSimpleModelData = dataProvider.GetInputSimpleTiledData();
-	    }
 
 	    public void GenerateOverlappingOutput()
 	    {
@@ -108,9 +97,6 @@ namespace Core
 	public class WaveFunctionCollapseGeneratorEditor : Editor {
 		public override void OnInspectorGUI () {
 			WaveFunctionCollapseGenerator generator = (WaveFunctionCollapseGenerator)target;
-			if(GUILayout.Button("Extract Simple tiled data")){
-				generator.ExtractSimpleTiledData();
-			}
 			if(GUILayout.Button("Generate Overlapping output")){
 				generator.GenerateOverlappingOutput();
 			}

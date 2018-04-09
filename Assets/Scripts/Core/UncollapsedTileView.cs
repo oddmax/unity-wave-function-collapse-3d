@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Core
 {
@@ -10,7 +11,10 @@ namespace Core
         public void UpdateState(double entropyLevel)
         {
             float entropy = 1f - (float)entropyLevel;
-            sphere.localScale = new Vector3(entropy, entropy, entropy);
+            if (entropy > 0)
+            {
+                sphere.localScale = new Vector3(entropy, entropy, entropy);
+            }
         }
     }
 }
