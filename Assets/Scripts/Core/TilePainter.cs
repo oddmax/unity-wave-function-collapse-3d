@@ -8,7 +8,7 @@ using UnityEditor;
 #endif
 
 [RequireComponent(typeof(BoxCollider))]
-public class TilePainterFixed : MonoBehaviour{
+public class TilePainter : MonoBehaviour{
 
 	public int gridsize = 1;
 	public int width = 20;
@@ -259,13 +259,13 @@ public class TilePainterFixed : MonoBehaviour{
 
 
 #if UNITY_EDITOR
- [CustomEditor(typeof(TilePainterFixed))]
+ [CustomEditor(typeof(TilePainter))]
  public class TileLayerEditor : Editor{
 	public enum TileOperation {None, Drawing, Erasing, Sampling};
 	private TileOperation operation;
 
 	public override void OnInspectorGUI () {
-		TilePainterFixed me = (TilePainterFixed)target;
+		TilePainter me = (TilePainter)target;
 		GUILayout.Label("Assign a prefab to the color property"); 
 		GUILayout.Label("or the pallete array.");
 		GUILayout.Label("drag        : paint tiles");
@@ -278,10 +278,10 @@ public class TilePainterFixed : MonoBehaviour{
 		DrawDefaultInspector();}
 
 	private bool AmHovering(Event e){
-		TilePainterFixed me = (TilePainterFixed)target;
+		TilePainter me = (TilePainter)target;
 		RaycastHit hit;
 		if (Physics.Raycast(HandleUtility.GUIPointToWorldRay(Event.current.mousePosition), out hit, Mathf.Infinity) && 
-				hit.collider.GetComponentInParent<TilePainterFixed>() == me)
+				hit.collider.GetComponentInParent<TilePainter>() == me)
 		{
 			me.cursor = me.GridV3(hit.point);
 			me.focused = true;
@@ -295,7 +295,7 @@ public class TilePainterFixed : MonoBehaviour{
 	}
 
 	public void ProcessEvents(){
-		TilePainterFixed me = (TilePainterFixed)target;
+		TilePainter me = (TilePainter)target;
 		int controlID = GUIUtility.GetControlID(1778, FocusType.Passive);
 		EditorWindow currentWindow = EditorWindow.mouseOverWindow;
 		if(currentWindow && AmHovering(Event.current)){
