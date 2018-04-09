@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Core.InputProviders
 {
-    public class TilePainterInputDataProvider : MonoBehaviour, IInputDataProvider
+    public class TilePainterInputDataProvider : InputDataProvider
     {   
         [SerializeField] 
         private int width;
@@ -20,7 +20,7 @@ namespace Core.InputProviders
         private int depth;
         
         [SerializeField] 
-        private TilePainterFixed tilePainter;
+        private TilePainter tilePainter;
         
         [SerializeField] 
         private GameObject tilesParent;
@@ -38,7 +38,7 @@ namespace Core.InputProviders
             FillPrefabMap();
         }
 
-        public InputOverlappingData GetInputOverlappingData()
+        public override InputOverlappingData GetInputOverlappingData()
         {
             if (Application.isPlaying == false)
             {
@@ -57,7 +57,7 @@ namespace Core.InputProviders
             return inputData;
         }
 
-        public InputSimpleTiledModelData GetInputSimpleTiledData()
+        public override InputSimpleTiledModelData GetInputSimpleTiledData()
         {
             if (Application.isPlaying == false)
             {

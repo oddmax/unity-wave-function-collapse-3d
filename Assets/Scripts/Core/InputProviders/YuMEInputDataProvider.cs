@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Core.InputProviders
 {
-    public class YuMEInputDataProvider : MonoBehaviour, IInputDataProvider
+    public class YuMEInputDataProvider : InputDataProvider
     {   
         [SerializeField] 
         private int width;
@@ -35,7 +35,7 @@ namespace Core.InputProviders
             FillPrefabMap();
         }
 
-        public InputOverlappingData GetInputOverlappingData()
+        public override InputOverlappingData GetInputOverlappingData()
         {
             if (Application.isPlaying == false)
             {
@@ -54,7 +54,7 @@ namespace Core.InputProviders
             return inputData;
         }
 
-        public InputSimpleTiledModelData GetInputSimpleTiledData()
+        public override InputSimpleTiledModelData GetInputSimpleTiledData()
         {
             if (Application.isPlaying == false)
             {
