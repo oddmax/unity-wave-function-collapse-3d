@@ -14,7 +14,7 @@ using Eppy;
 using UnityEngine;
 using Random = System.Random;
 
-abstract class NewModel<PARAM> : IModel where PARAM : WaveFunctionCollapseModelParams
+public abstract class Model2d<PARAM> : IModel where PARAM : WaveFunctionCollapseModelParams
 {
 	protected bool[][] wave;
 
@@ -38,7 +38,7 @@ abstract class NewModel<PARAM> : IModel where PARAM : WaveFunctionCollapseModelP
 	
 	public WaveFunctionCollapseModelParams ModelParam { get; private set; }
 
-	protected NewModel(PARAM modelParam)
+	protected Model2d(PARAM modelParam)
 	{
 		this.ModelParam = modelParam;
 		
@@ -108,7 +108,6 @@ abstract class NewModel<PARAM> : IModel where PARAM : WaveFunctionCollapseModelP
 		}
 
 		startingEntropy = Math.Log(sumOfWeights) - sumOfWeightLogWeights / sumOfWeights;
-		Debug.Log(">>>>>>>>>>> " + startingEntropy);
 
 		sumsOfOnes = new int[FMX * FMY];
 		sumsOfWeights = new double[FMX * FMY];
@@ -216,8 +215,6 @@ abstract class NewModel<PARAM> : IModel where PARAM : WaveFunctionCollapseModelP
 
 		sum = sumsOfWeights[i];
 		entropies[i] -= sumsOfWeightLogWeights[i] / sum - Math.Log(sum);
-		
-		Debug.Log(">>> " + i + " >>>>>>>> " + entropies[i]);
 	}
 
 	protected virtual void Clear()
