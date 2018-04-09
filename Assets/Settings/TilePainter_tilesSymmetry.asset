@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1923b6bdd0a346ecafb5d8f590b6ab38, type: 3}
+  m_Name: TilePainter_tilesSymmetry
+  m_EditorClassIdentifier: 
+  SymmetryX:
+  - {fileID: 1000010014209402, guid: f60283944539343ab93f9a620a1f6a78, type: 2}
+  - {fileID: 1000011400876510, guid: 54e885b0c66864527bf354b63b647ec2, type: 2}
+  SymmetryL:
+  - {fileID: 1000011919750164, guid: 6c74cfbe185e1413d9429f16f30511f8, type: 2}
+  - {fileID: 1085761803039498, guid: a3fbd43933eb14a67a85df8f33f3d4ed, type: 2}
+  SymmetryT:
+  - {fileID: 1000011458013394, guid: d2aa0e07fd23d42288357f34511f3798, type: 2}
+  - {fileID: 1000012809223666, guid: da7b0f86a78bd4df5a1a8223e8533d43, type: 2}
+  - {fileID: 1060547455079178, guid: a72e4e111a5644e5cbff9f3dbb98e12a, type: 2}
+  - {fileID: 1231064433434622, guid: dd2602834ed064fd1a44d64ef2cfe131, type: 2}
+  SymmetryI:
+  - {fileID: 1000010818573026, guid: 5a55dab19af0a4a48b255131734b17f8, type: 2}
+  - {fileID: 1000012711865864, guid: eb4ddedd6b77947dca0ed156428f2b32, type: 2}
+  - {fileID: 1000012117554692, guid: cb5cada03fcb3435bb7ba29a2dedc053, type: 2}
+  - {fileID: 1000012768675812, guid: bdfa1bbe5e4c6436ea2e9abbf6e8e321, type: 2}
+  - {fileID: 1000011220840842, guid: 6960a41176479467eadb37fedebf611c, type: 2}
+  SymmetrySlash: []
