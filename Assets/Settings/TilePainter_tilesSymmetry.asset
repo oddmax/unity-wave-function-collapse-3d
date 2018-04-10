@@ -14,18 +14,24 @@ MonoBehaviour:
   SymmetryX:
   - {fileID: 1000010014209402, guid: f60283944539343ab93f9a620a1f6a78, type: 2}
   - {fileID: 1000011400876510, guid: 54e885b0c66864527bf354b63b647ec2, type: 2}
+  - {fileID: 1000010663199542, guid: 33fe361bdb6e2488f8778703d4686a17, type: 2}
+  - {fileID: 1000011279982584, guid: 43c058248d2ca411290f0fece0bd41c6, type: 2}
+  - {fileID: 1000011711363582, guid: 87ad8583bf4704265a19a5896536b43e, type: 2}
   SymmetryL:
   - {fileID: 1000011919750164, guid: 6c74cfbe185e1413d9429f16f30511f8, type: 2}
   - {fileID: 1085761803039498, guid: a3fbd43933eb14a67a85df8f33f3d4ed, type: 2}
+  - {fileID: 1862029139750828, guid: 8a3e50e9aee704099982dd4f6b075e02, type: 2}
   SymmetryT:
   - {fileID: 1000011458013394, guid: d2aa0e07fd23d42288357f34511f3798, type: 2}
   - {fileID: 1000012809223666, guid: da7b0f86a78bd4df5a1a8223e8533d43, type: 2}
   - {fileID: 1060547455079178, guid: a72e4e111a5644e5cbff9f3dbb98e12a, type: 2}
   - {fileID: 1231064433434622, guid: dd2602834ed064fd1a44d64ef2cfe131, type: 2}
+  - {fileID: 1548553041272110, guid: 8751679bf4d4e424691f91ea490034f8, type: 2}
   SymmetryI:
   - {fileID: 1000010818573026, guid: 5a55dab19af0a4a48b255131734b17f8, type: 2}
   - {fileID: 1000012711865864, guid: eb4ddedd6b77947dca0ed156428f2b32, type: 2}
   - {fileID: 1000012117554692, guid: cb5cada03fcb3435bb7ba29a2dedc053, type: 2}
   - {fileID: 1000012768675812, guid: bdfa1bbe5e4c6436ea2e9abbf6e8e321, type: 2}
   - {fileID: 1000011220840842, guid: 6960a41176479467eadb37fedebf611c, type: 2}
+  - {fileID: 1000013667857060, guid: a9eb77e96c9e04c0ba966bbbe08e1da1, type: 2}
   SymmetrySlash: []

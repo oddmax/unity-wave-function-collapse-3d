@@ -20,6 +20,7 @@ MonoBehaviour:
   - {fileID: 182142, guid: c0e8baa35ad595945b33060be012d85f, type: 2}
   - {fileID: 132410, guid: a13bbee944664ef4ba585af046e7e44c, type: 2}
   - {fileID: 123044, guid: e9f71fbb2180dad45a9d66c715b657b8, type: 2}
+  - {fileID: 118360, guid: 6eacdce3fa9060b4498508536d1414e7, type: 2}
   SymmetryL:
   - {fileID: 176490, guid: 4f29514a127955646a6cb15306f851a1, type: 2}
   - {fileID: 138098, guid: d5bde9e99b7aa9344a7f8d6049cb7c64, type: 2}
@@ -41,4 +42,5 @@ MonoBehaviour:
   - {fileID: 168784, guid: 7ff2be065a47436438d0aba020472f82, type: 2}
   SymmetryI:
   - {fileID: 111108, guid: 3c6d8fa93876a7340af4c1148db1adba, type: 2}
+  - {fileID: 123422, guid: 373cf4116bb1d5449b6baf4636e07ad5, type: 2}
   SymmetrySlash: []
