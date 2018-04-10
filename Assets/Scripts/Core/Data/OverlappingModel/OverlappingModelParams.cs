@@ -34,7 +34,7 @@
         
         /// <summary>
         /// When not 0, this assigns a pattern for the bottom row of the output.
-        /// It's mainly useful for "vertical" words, where you want a distinct ground and sky separation.
+        /// It's mainly useful for "vertical" worlds, where you want a distinct ground and sky separation.
         /// The value corresponds to the overlap models internal pattern indexes,
         /// so some experimentation is needed to figure out a suitable value.
         /// </summary>

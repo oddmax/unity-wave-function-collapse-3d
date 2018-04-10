@@ -68,7 +68,14 @@ public abstract class Model2d<PARAM> : IModel where PARAM : WaveFunctionCollapse
 		if (wave == null) Init();
 
 		Clear();
-		random = new Random(seed);
+		if (seed != 0)
+		{
+			random = new Random(seed);
+		}
+		else
+		{
+			random = new Random();
+		}
 
 		for (int l = 0; l < limit || limit == 0; l++)
 		{

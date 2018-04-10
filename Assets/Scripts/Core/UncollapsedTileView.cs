@@ -10,10 +10,15 @@ namespace Core
         
         public void UpdateState(double entropyLevel)
         {
-            float entropy = 1f - (float)entropyLevel;
+            float entropy = (float)entropyLevel;
             if (entropy > 0)
             {
+                sphere.gameObject.SetActive(true);
                 sphere.localScale = new Vector3(entropy, entropy, entropy);
+            }
+            else
+            {
+                sphere.gameObject.SetActive(false);
             }
         }
     }
