@@ -6,10 +6,12 @@ There are two models
 * **Simple Tiled model** takes input and creates neigbor constraints (legal adjacencies for different tiles) for the tiles based on information if in input tile were located next to each other.
 
 **Overlapping model output example (input on the left, generated output on the right)**
-<p align="center"><img alt="main collage" src="https://i.imgur.com/okAaFfX.png"></p>
+<p align="center"><img alt="overlapping model" src="https://i.imgur.com/okAaFfX.png"></p>
 
 **Simple Tiled model output example**
-<p align="center"><img alt="main collage" src="https://i.imgur.com/zR83Baz.png"></p>
+<p align="center"><img alt="simple tiled model" src="https://i.imgur.com/zR83Baz.png"></p>
+
+<p align="center"><img alt="main gif" src="https://i.imgur.com/L9va3Em.gif"></p>
 
 Watch a video demonstration of plugin in action on YouTube: https://www.youtube.com/watch?v=Mkvh4rosiF0 and https://www.youtube.com/watch?v=JO8OW2zg0gY
 
