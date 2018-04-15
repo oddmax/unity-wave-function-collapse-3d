@@ -24,7 +24,7 @@ For Overlapping model:
 * Create a game object and add to it WaveFunctionCollapseRenderer, this object is goint to be a target for generated content
 * Create a game object and add to it WaveFunctionCollapseGenerator, this object starts generation.
 * Drag-and-drop InputDataProvider and WaveFunctionCollapseRenderer objects to corresponding fields in generator object
-* *Only for simple tiled model* Create SymmetrySetsScriptableObject and set up symmetries for your tile prefabs. Look below to read more about symmetries. 
+* (*Only for simple tiled model*) Create SymmetrySetsScriptableObject and set up symmetries for your tile prefabs. Look below to read more about symmetries. 
 * Set up parameters of a generator to required in your case.
 * Press "Generate Overlapping output" or "Generate Simple Tiled output" depending on your needs
 
