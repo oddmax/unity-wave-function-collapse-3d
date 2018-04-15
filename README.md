@@ -5,10 +5,10 @@ There are two models
 * **Overlapping model** breaks an input pattern up into pattern chunks. And arrange them in output with constraint of local similarity (You can read more about this in original repo). In simple words, it produces output which looks similar to input.
 * **Simple Tiled model** takes input and creates neigbor constraints (legal adjacencies for different tiles) for the tiles based on information if in input tile were located next to each other.
 
-**Simple Tiled model output example**
+**Overlapping model output example (input on the left, generated output on the right)**
 <p align="center"><img alt="main collage" src="https://i.imgur.com/okAaFfX.png"></p>
 
-**Overlapping model output example**
+**Simple Tiled model output example**
 <p align="center"><img alt="main collage" src="https://i.imgur.com/zR83Baz.png"></p>
 
 Watch a video demonstration of plugin in action on YouTube: https://www.youtube.com/watch?v=Mkvh4rosiF0 and https://www.youtube.com/watch?v=JO8OW2zg0gY
