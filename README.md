@@ -1,4 +1,4 @@
-# unity-wave-function-collapse-3d
+# Wave Function Collapse content generator for Unity
 Unity plugin for procedural generation of levels, environments or 3d models based on Wave Function Collapse algorithm. Wave Function Collapse algorithm is employed to assemble 2d and 3d tile-based visually impressive levels, dioramas, buildings, etc from handcrafted tilesets.
 
 There are two models
