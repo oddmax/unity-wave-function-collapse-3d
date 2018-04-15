@@ -11,7 +11,7 @@ There are two models
 **Simple Tiled model output example**
 <p align="center"><img alt="simple tiled model" src="https://i.imgur.com/zR83Baz.png"></p>
 
-<p align="center"><img alt="main gif" src="https://i.imgur.com/FSthUVO.gif"></p>
+<p align="center"><img alt="main gif" src="https://i.imgur.com/nhhWdry.gif"></p>
 
 Watch a video demonstration of plugin in action on YouTube: https://www.youtube.com/watch?v=Mkvh4rosiF0 and https://www.youtube.com/watch?v=JO8OW2zg0gY
 
