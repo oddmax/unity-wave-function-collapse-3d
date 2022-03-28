@@ -2,7 +2,7 @@
 Unity plugin for procedural generation of levels, environments or 3d models based on Wave Function Collapse algorithm. Wave Function Collapse algorithm is employed to assemble 2d and 3d tile-based visually impressive levels, dioramas, buildings, etc from handcrafted tilesets.
 
 There are two models
-* **Overlapping model** breaks an input pattern up into pattern chunks. And arrange them in output with constraint of local similarity (You can read more about this in original repo). In simple words, it produces output which looks similar to input.
+* **Overlapping model** breaks an input pattern up into pattern chunks. And arrange them in output with constraint of local similarity (You can read more about this in [original repo](https://github.com/mxgmn/WaveFunctionCollapse)). In simple words, it produces output which looks similar to input.
 * **Simple Tiled model** takes input and creates neigbor constraints (legal adjacencies for different tiles) for the tiles based on information if in input tile were located next to each other.
 
 **Overlapping model output example (input on the left, generated output on the right)**
