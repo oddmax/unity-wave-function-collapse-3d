@@ -22,7 +22,7 @@ public abstract class Model2d<PARAM> : IModel where PARAM : WaveFunctionCollapse
 	int[][][] compatible;
 	protected int[] observed;
 
-	Tuple<int, int>[] stack;
+	Eppy.Tuple<int, int>[] stack;
 	int stacksize;
 
 	protected Random random;
@@ -121,7 +121,7 @@ public abstract class Model2d<PARAM> : IModel where PARAM : WaveFunctionCollapse
 		sumsOfWeightLogWeights = new double[FMX * FMY];
 		entropies = new double[FMX * FMY];
 
-		stack = new Tuple<int, int>[wave.Length * T];
+		stack = new Eppy.Tuple<int, int>[wave.Length * T];
 		stacksize = 0;
 	}
 
@@ -210,7 +210,7 @@ public abstract class Model2d<PARAM> : IModel where PARAM : WaveFunctionCollapse
 
 		int[] comp = compatible[i][t];
 		for (int d = 0; d < 4; d++) comp[d] = 0;
-		stack[stacksize] = new Tuple<int, int>(i, t);
+		stack[stacksize] = new Eppy.Tuple<int, int>(i, t);
 		stacksize++;
 
 		double sum = sumsOfWeights[i];

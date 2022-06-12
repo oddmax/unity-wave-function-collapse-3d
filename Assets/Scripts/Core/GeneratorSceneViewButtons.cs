@@ -8,8 +8,8 @@ namespace Core
 
         static GeneratorSceneViewButtons()
         {
-            SceneView.onSceneGUIDelegate -= OnSceneGUI;
-            SceneView.onSceneGUIDelegate += OnSceneGUI;
+            SceneView.duringSceneGui -= OnSceneGUI;
+            SceneView.duringSceneGui += OnSceneGUI;
         }
 
         static void OnSceneGUI(SceneView sceneView)

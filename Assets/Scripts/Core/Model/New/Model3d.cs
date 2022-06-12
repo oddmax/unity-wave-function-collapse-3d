@@ -24,7 +24,7 @@ public abstract class Model3d<PARAM> : IModel3d where PARAM : WaveFunctionCollap
 	int[][][] compatible;
 	protected int[] observed;
 
-	Tuple<int, int>[] stack;
+	Eppy.Tuple<int, int>[] stack;
 	int stacksize;
 
 	protected Random random;
@@ -128,7 +128,7 @@ public abstract class Model3d<PARAM> : IModel3d where PARAM : WaveFunctionCollap
 		sumsOfWeightLogWeights = new double[FMX * FMY * FMZ];
 		entropies = new double[FMX * FMY * FMZ];
 
-		stack = new Tuple<int, int>[wave.Length * T];
+		stack = new Eppy.Tuple<int, int>[wave.Length * T];
 		stacksize = 0;
 	}
 
@@ -234,7 +234,7 @@ public abstract class Model3d<PARAM> : IModel3d where PARAM : WaveFunctionCollap
 
 		int[] comp = compatible[i][t];
 		for (int d = 0; d < DIRECTIONS_AMOUNT; d++) comp[d] = 0;
-		stack[stacksize] = new Tuple<int, int>(i, t);
+		stack[stacksize] = new Eppy.Tuple<int, int>(i, t);
 		stacksize++;
 
 		double sum = sumsOfWeights[i];

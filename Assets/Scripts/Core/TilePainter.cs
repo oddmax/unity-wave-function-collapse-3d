@@ -203,7 +203,7 @@ public class TilePainter : MonoBehaviour{
 		if (tileobs == null){Restore();}
 		if (this.ValidCoords((int)cursor.x, (int)cursor.z)){
 			if (op == TileLayerEditor.TileOperation.Sampling){
-				UnityEngine.Object s = PrefabUtility.GetPrefabParent(tileobs[(int)cursor.x, (int)cursor.z]);
+				UnityEngine.Object s = PrefabUtility.GetCorrespondingObjectFromSource(tileobs[(int)cursor.x, (int)cursor.z]);
 				if (s != null){
 					color = s;
 					color_rotation = tileobs[(int)cursor.x, (int)cursor.z].transform.localRotation;
@@ -287,7 +287,7 @@ public class TilePainter : MonoBehaviour{
 			me.focused = true;
 
 			Renderer rend = me.gameObject.GetComponentInChildren<Renderer>( );
-			if( rend ) EditorUtility.SetSelectedWireframeHidden( rend, false );
+			if( rend ) EditorUtility.SetSelectedRenderState( rend, EditorSelectedRenderState.Wireframe );
 			return true;
 		}
 		me.focused = false;
@@ -302,19 +302,19 @@ public class TilePainter : MonoBehaviour{
 			Event current = Event.current;
 			bool leftbutton = (current.button == 0);
 			switch(current.type){
-				case EventType.keyDown:
+				case EventType.KeyDown:
 
 					if (current.keyCode == KeyCode.Q) operation = TileOperation.Sampling;
 					if (current.keyCode == KeyCode.X) operation = TileOperation.Erasing;
 					current.Use();
 					return;
-				case EventType.keyUp:
+				case EventType.KeyUp:
 					operation = TileOperation.None;
 					if (current.keyCode == KeyCode.Space) me.Turn();
 					if (current.keyCode == KeyCode.B) me.CycleColor();
 					current.Use();
 					return;
-				case EventType.mouseDown:
+				case EventType.MouseDown:
 					if (leftbutton)
 					{
 						if (operation == TileOperation.None){
@@ -326,7 +326,7 @@ public class TilePainter : MonoBehaviour{
 						return;
 					}
 					break;
-				case EventType.mouseDrag:
+				case EventType.MouseDrag:
 					if (leftbutton)
 					{
 						if (operation != TileOperation.None){
@@ -337,7 +337,7 @@ public class TilePainter : MonoBehaviour{
 						return;
 					}
 					break;
-				case EventType.mouseUp:
+				case EventType.MouseUp:
 					if (leftbutton)
 					{
 						operation = TileOperation.None;
@@ -345,13 +345,13 @@ public class TilePainter : MonoBehaviour{
 						return;
 					}
 				break;
-				case EventType.mouseMove:
+				case EventType.MouseMove:
 					me.Resize();
 					current.Use();
 				break;
-				case EventType.repaint:
+				case EventType.Repaint:
 				break;
-				case EventType.layout:
+				case EventType.Layout:
 				HandleUtility.AddDefaultControl(controlID);
 				break;
 			}
